@@ -1,0 +1,1501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UXR Level-Up Lab</title>
+<meta name="description" content="Built based on analysis of 50 verified North American mid-senior UXR job postings (Oct 2026).">
+<style>
+@font-face{font-family:"Geist Sans";font-style:normal;font-weight:400;font-display:swap;src:url("https://cdn.jsdelivr.net/fontsource/fonts/geist-sans@latest/latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Geist Sans";font-style:normal;font-weight:500;font-display:swap;src:url("https://cdn.jsdelivr.net/fontsource/fonts/geist-sans@latest/latin-500-normal.woff2") format("woff2")}
+@font-face{font-family:"Geist Sans";font-style:normal;font-weight:600;font-display:swap;src:url("https://cdn.jsdelivr.net/fontsource/fonts/geist-sans@latest/latin-600-normal.woff2") format("woff2")}
+@font-face{font-family:"Geist Sans";font-style:normal;font-weight:700;font-display:swap;src:url("https://cdn.jsdelivr.net/fontsource/fonts/geist-sans@latest/latin-700-normal.woff2") format("woff2")}
+@font-face{font-family:"Geist Mono";font-style:normal;font-weight:400;font-display:swap;src:url("https://cdn.jsdelivr.net/fontsource/fonts/geist-mono@latest/latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Geist Mono";font-style:normal;font-weight:500;font-display:swap;src:url("https://cdn.jsdelivr.net/fontsource/fonts/geist-mono@latest/latin-500-normal.woff2") format("woff2")}
+@font-face{font-family:"Geist Mono";font-style:normal;font-weight:600;font-display:swap;src:url("https://cdn.jsdelivr.net/fontsource/fonts/geist-mono@latest/latin-600-normal.woff2") format("woff2")}
+:root{
+ --font-sans:"Geist Sans",-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Noto Sans SC","Microsoft YaHei",system-ui,sans-serif;
+ --font-mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+:root{
+  --bg:#faf7f1; --card:#ffffff; --ink:#2c2620; --muted:#8a7f72; --line:#ece4d8;
+  --accent:#e8365d; --accent-soft:#fdeef2;
+  --lv0:#b7b0c9; --lv1:#43b581; --lv2:#f2994a; --lv3:#f2c94c;
+  --radius:16px; --shadow:0 6px 24px rgba(60,40,20,.07);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--font-sans);
+  line-height:1.6}
+.mono{font-family:var(--font-mono);font-feature-settings:"tnum" 1}
+button{font:inherit;cursor:pointer}
+input,textarea,select{font:inherit;color:var(--ink)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+/* ---------- top bar ---------- */
+.topbar{position:sticky;top:0;z-index:60;background:rgba(250,247,241,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;align-items:center;gap:10px;padding:10px 18px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;margin-right:auto}
+.brand .dot{width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--accent-soft)}
+.heroesub{border-bottom:1px solid var(--line);background:rgba(255,255,255,.55)}
+.heroesub .wrap{padding-top:10px;padding-bottom:10px}
+.heroesub span{font-size:13px;color:var(--muted)}
+.seg{display:flex;background:#f1e9dd;border-radius:999px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;border-radius:999px;padding:6px 14px;font-size:13px;color:var(--muted);font-weight:600}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.iconbtn{border:1px solid var(--line);background:#fff;border-radius:12px;padding:7px 12px;font-size:13px;font-weight:600;display:inline-flex;align-items:center;gap:6px}
+.iconbtn:hover{border-color:var(--accent);color:var(--accent)}
+.iconbtn svg{width:15px;height:15px}
+/* ---------- banners ---------- */
+.banner{display:none;margin:12px auto 0;max-width:1180px;padding:10px 16px;border-radius:12px;font-size:13.5px}
+.banner.show{display:block}
+#demoBanner{background:#fff7e8;border:1px solid #f0dcae;color:#7a5b16}
+#storeBanner{background:#fdeaea;border:1px solid #f3b8b8;color:#8f1d1d}
+.banner .wrap{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:0}
+/* ---------- cards & grid ---------- */
+.grid{display:grid;grid-template-columns:1fr 380px;gap:16px;margin:16px auto 40px;max-width:1180px;padding:0 18px}
+.grid .full{grid-column:1/-1}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+.card h2{margin:0 0 4px;font-size:16px;display:flex;align-items:center;gap:8px}
+.card h2 svg{width:18px;height:18px;color:var(--accent)}
+.card .sub{font-size:12.5px;color:var(--muted);margin:0 0 12px}
+/* ---------- progress ---------- */
+.pstats{display:flex;gap:18px;flex-wrap:wrap;align-items:center}
+.pstat b{font-size:26px}
+.pstat span{font-size:12px;color:var(--muted);display:block}
+.stagechip{background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:4px 14px;font-weight:700;font-size:13px}
+.mbar{height:10px;background:#f1e9dd;border-radius:99px;overflow:hidden;margin-top:8px}
+.mbar i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#ff7a93);border-radius:99px;transition:width .5s}
+.branchbars{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:8px 18px}
+.bbar{font-size:12.5px}
+.bbar .row{display:flex;justify-content:space-between;margin-bottom:3px}
+.bbar .tr{height:7px;background:#f4eee4;border-radius:99px;overflow:hidden}
+.bbar .tr i{display:block;height:100%;border-radius:99px}
+/* ---------- tree svg ---------- */
+#treeWrap{position:relative}
+#treeSvg{width:100%;height:auto;display:block;border-radius:12px;background:linear-gradient(#eaf4ff 0%,#f7fbff 55%,#fdf6ec 100%)}
+.tnode{cursor:pointer}
+.tnode:hover .leafbody{stroke-width:2.8}
+.tnode circle{stroke:#fff;stroke-width:2.5;transition:transform .15s}
+.tnode:hover circle{stroke-width:4}
+.tnode text{font-size:10px;fill:#6b6156;text-anchor:middle;pointer-events:none}
+.blabel{font-size:12px;font-weight:700;fill:#5c5348}
+/* ---------- list view ---------- */
+.brcard{border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
+.brhead{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#fbf8f3;cursor:pointer}
+.brhead .sw{width:12px;height:12px;border-radius:4px}
+.brhead b{font-size:14px}
+.brhead .avg{margin-left:auto;font-size:12px;color:var(--muted)}
+.brbody{padding:6px 10px 10px;display:none}
+.brcard.open .brbody{display:block}
+.srow{display:flex;align-items:center;gap:10px;padding:8px 6px;border-top:1px dashed var(--line);cursor:pointer}
+.srow:hover{background:#fdfaf5}
+.srow .nm{flex:1;font-size:13.5px}
+.srow .dm{font-size:11.5px;color:var(--muted);min-width:44px;text-align:right}
+.lvdot{width:14px;height:14px;border-radius:50%;flex:none;border:2px solid #fff;box-shadow:0 0 0 1px var(--line)}
+.dbar{width:64px;height:6px;background:#f1e9dd;border-radius:99px;overflow:hidden;flex:none}
+.dbar i{display:block;height:100%;background:#c9a86a}
+/* ---------- drawer ---------- */
+#scrim{position:fixed;inset:0;background:rgba(40,30,20,.35);opacity:0;pointer-events:none;transition:opacity .25s;z-index:80}
+#scrim.show{opacity:1;pointer-events:auto}
+#drawer{position:fixed;top:0;right:0;bottom:0;width:min(460px,94vw);background:#fffdf9;z-index:90;
+  transform:translateX(105%);transition:transform .28s ease;display:flex;flex-direction:column;border-left:1px solid var(--line)}
+#drawer.show{transform:none}
+#drawer .dhead{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:flex-start}
+#drawer .dhead .tt{flex:1}
+#drawer .dhead h3{margin:0;font-size:17px}
+#drawer .dhead .meta{font-size:12px;color:var(--muted);margin-top:2px}
+#drawer .dbody{overflow-y:auto;padding:16px 18px;flex:1}
+.dsec{margin-bottom:18px}
+.dsec h4{margin:0 0 8px;font-size:13px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.lvbtns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.lvbtn{border:2px solid var(--line);border-radius:12px;padding:9px;background:#fff;text-align:left;font-size:13px}
+.lvbtn b{display:flex;align-items:center;gap:7px;font-size:13.5px}
+.lvbtn small{color:var(--muted);font-size:11.5px;display:block;margin-top:2px;line-height:1.4}
+.lvbtn.sel{border-color:var(--accent);background:var(--accent-soft)}
+.lvbtn .cdot{width:12px;height:12px;border-radius:50%;display:inline-block}
+textarea,input[type=text],input[type=password],select{width:100%;border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#fff;font-size:13.5px}
+textarea{min-height:76px;resize:vertical}
+.btn{background:var(--accent);color:#fff;border:0;border-radius:12px;padding:10px 18px;font-weight:700;font-size:14px}
+.btn:hover{filter:brightness(.95)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn.sm{padding:6px 12px;font-size:12.5px;border-radius:9px}
+.resitem{border:1px solid var(--line);border-radius:10px;padding:9px 11px;margin-bottom:8px;font-size:13px;background:#fff}
+.resitem .tp{font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.05em}
+.resitem small{color:var(--muted);display:block}
+.tl{border-left:2px solid var(--line);margin:6px 0 0 6px;padding-left:14px}
+.tl .ev{font-size:12.5px;margin-bottom:10px;position:relative}
+.tl .ev:before{content:"";position:absolute;left:-20.5px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--accent)}
+.tl .ev time{color:var(--muted);font-size:11px;display:block}
+/* ---------- generic list rows ---------- */
+.gaprow{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px dashed var(--line);font-size:13.5px}
+.gaprow:first-of-type{border-top:0}
+.tag{font-size:11px;font-weight:700;border-radius:99px;padding:2px 9px;white-space:nowrap}
+.tag.hi{background:#fde7ec;color:#c2254d}.tag.mh{background:#fff3df;color:#b26a00}.tag.md{background:#eef4ff;color:#2f5fc2}.tag.lo{background:#f1f1f1;color:#777}
+/* ---------- modal ---------- */
+.modal{position:fixed;inset:0;z-index:100;display:none;align-items:center;justify-content:center;padding:18px}
+.modal.show{display:flex}
+.modal .box{background:#fff;border-radius:18px;max-width:560px;width:100%;max-height:88vh;overflow:auto;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal h3{margin:0 0 12px}
+.frow{margin-bottom:12px}
+.frow label{font-size:12.5px;font-weight:700;display:block;margin-bottom:5px}
+.frow small{color:var(--muted);font-size:11.5px}
+.checkline{display:flex;gap:8px;align-items:flex-start;font-size:13px;margin-top:8px}
+/* ---------- misc ---------- */
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.ddbanner{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap;background:linear-gradient(90deg,#fff7ed,#fef3c7);border:1px solid #fcd34d;border-radius:10px;padding:10px 14px;margin:10px 0;font-size:14px;color:#7c2d12}
+.ddbanner b{font-size:15px}
+.ddbanner .ddn{margin-left:auto;font-weight:700;color:#92400e;white-space:nowrap}
+.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:600}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.kbd{font-size:11px;background:#f4eee4;border-radius:6px;padding:1px 7px;color:var(--muted)}
+.foot{border-top:1px solid var(--line);margin-top:30px;padding:22px 0 46px;color:var(--muted);font-size:12.5px}
+.foot .wrap p{margin:4px 0}
+.score{font-size:34px;font-weight:800;color:var(--accent)}
+.star3{display:grid;gap:8px}
+.star3 label{font-size:12px;font-weight:700}
+.privnote{font-size:11.5px;color:var(--muted)}
+body.public .priv{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media(max-width:900px){
+  .grid{grid-template-columns:1fr}
+  .branchbars{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  #drawer{top:auto;left:0;right:0;bottom:0;width:100%;max-height:88vh;border-radius:20px 20px 0 0;transform:translateY(105%);border-left:0;border-top:1px solid var(--line)}
+  #drawer.show{transform:none}
+  .pstats{gap:12px}
+  .card{padding:14px}
+  .drow{grid-template-columns:1fr}
+}
+/* ---- tree metaphor: leaves, glow, halo ---- */
+.tnode{cursor:pointer}
+.tnode .eglow{animation:breathe 2.8s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:.16}50%{opacity:.5}}
+.tnode .halo{animation:halopulse 2s ease-in-out infinite}
+@keyframes halopulse{0%,100%{opacity:.45}50%{opacity:1}}
+.tnode.pulse .leafbody{animation:nodepulse 1s ease-in-out infinite}
+@keyframes nodepulse{50%{opacity:.5}}
+.tnode.flash .leafbody{animation:nodeflash .45s ease-in-out 3}
+@keyframes nodeflash{50%{opacity:.25}}
+.blabel{font-size:13px;fill:#6b6156;text-anchor:middle;font-weight:600}
+.rootlabel{font-size:12px;fill:#6b5b45;text-anchor:middle;font-weight:600}
+/* ---- double diamond view ---- */
+#ddTreeWrap svg{width:100%;height:auto;display:block}
+.ddsub{color:var(--muted);font-size:13px;margin:2px 0 4px}
+.dgroup{margin:14px 0}
+.dlabel{font-weight:700;margin-bottom:8px;font-size:15px}
+.drow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.phasecard{background:#fff;border:1px solid #eee;border-radius:14px;padding:14px;transition:opacity .25s,box-shadow .25s;margin-bottom:12px}
+.phasecard.dim{opacity:.38}
+.phasecard.flash{box-shadow:0 0 0 3px #f2b705;animation:nodeflash .45s ease-in-out 3}
+.phead{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pdia{width:26px;height:26px;transform:rotate(45deg);border-radius:6px;display:inline-flex;align-items:center;justify-content:center;flex:none}
+.pdia b{transform:rotate(-45deg);color:#fff;font-size:13px}
+.ptagline{color:var(--muted);font-size:12.5px}
+.pgoal{font-size:13.5px;margin:8px 0;color:#4a4438}
+.ptags{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.ptag{border:1px solid var(--line);background:#fbf9f4;border-radius:999px;padding:4px 10px;font-size:12.5px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.ptag:hover{border-color:var(--accent)}
+.ptag .lvdt{width:8px;height:8px;border-radius:50%;flex:none}
+.ptag.static{cursor:default}
+.pmeta{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:8px;font-size:12.5px;color:var(--muted)}
+.pbar{flex:1;min-width:90px;height:7px;background:#f1ece1;border-radius:99px;overflow:hidden}
+.pbar i{display:block;height:100%;background:linear-gradient(90deg,#7cb86b,#2f9e44);border-radius:99px}
+.proofbtn{border:1px dashed var(--accent);background:#fff;border-radius:999px;padding:3px 10px;font-size:12.5px;cursor:pointer;color:var(--accent)}
+.prooflist{margin:8px 0 0;padding:0;list-style:none;font-size:13px}
+.prooflist li{padding:6px 0;border-top:1px dashed var(--line);cursor:pointer;color:#4a4438}
+.prooflist li:hover{color:var(--accent)}
+.parts{font-size:12.5px;color:var(--muted);margin-top:8px}
+.parts b{color:#4a4438}
+#ddAlert{border-radius:12px;padding:12px 14px;margin:12px 0;font-size:14px;line-height:1.6}
+#ddAlert.good{background:#edf7ee;border:1px solid #bfe3c4;color:#1e6b34}
+#ddAlert.warn{background:#fff8e6;border:1px solid #f2d38a;color:#8a5a00}
+.stationrow{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.muted{color:var(--muted);font-size:13px}
+/* ---- double diamond canvas ---- */
+.ddtoolbar{display:flex;justify-content:flex-end;align-items:center;gap:14px;margin:2px 0 8px;flex-wrap:wrap}
+.qscan{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer}
+.qscan input{accent-color:#e11d48}
+.canvaswrap{position:relative;margin:4px 0 0}
+#ddCanvas{width:100%;height:auto;display:block}
+.canvaswrap .quad{cursor:pointer;transition:opacity .25s}
+.canvaswrap .quad:hover{opacity:.08}
+.canvaswrap .quad.lit{opacity:.13}
+.canvaswrap .conn{fill:none;stroke:#e11d48;stroke-width:2.5;stroke-dasharray:6 5;opacity:0;transition:opacity .3s}
+.canvaswrap .conn.lit{opacity:.9}
+.qpill{position:absolute;transform:translate(-50%,-50%);background:#fff;border:1.5px solid #f3b3c0;border-radius:12px;padding:8px 12px;box-shadow:0 4px 18px rgba(225,29,72,.18);cursor:pointer;text-align:left;min-width:120px;z-index:2}
+.qpill b{font-size:12.5px;color:#1f1b14;display:block;font-weight:600}
+.qpill b i{color:#e11d48;font-style:normal;margin-right:4px}
+.qpill .pbar{display:block;height:5px;background:#f1ece1;border-radius:99px;margin:6px 0;overflow:hidden}
+.qpill .pbar i{display:block;height:100%;background:#e11d48;border-radius:99px}
+.qpill .pcase{font-size:12px;color:#6b6156}
+.qpill:hover{box-shadow:0 4px 24px rgba(225,29,72,.38)}
+.qcloud{position:absolute;transform:translate(-50%,-50%);width:19%;display:flex;flex-wrap:wrap;gap:2px 7px;justify-content:center;align-content:center;z-index:1}
+.mword{font-size:11px;line-height:1.45;color:#3a352c;cursor:pointer}
+.mword.off{color:#c0b9a8;opacity:.6}
+.mword.mid{color:#8a8478}
+.mword.on{color:#1f1b14;font-weight:600}
+.mword .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#e11d48;margin-right:4px;box-shadow:0 0 6px #e11d48}
+.mword.art{cursor:default;color:#6b6156;font-style:italic}
+.fdrunway{margin:10px 0 4px;background:#f4f1ea;border:1px solid #e5e0d2;border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.fdlabel{font-size:11.5px;font-weight:700;letter-spacing:1.5px;color:#8a8478}
+.fditem{font-size:13px;background:#fff;border:1px solid #e5e0d2;border-radius:999px;padding:4px 12px;cursor:pointer;transition:border-color .2s,color .2s}
+.fditem:hover{border-color:#e11d48;color:#e11d48}
+.covlist{margin:8px 0}
+.crow{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px dashed var(--line);font-size:13.5px;cursor:pointer}
+.crow:hover{color:var(--accent)}
+.crow .dm{margin-left:auto;color:var(--muted);font-size:12.5px;flex:none}
+/* ---- double diamond: SaaS board ---- */
+.ddlegend{margin:2px 0 4px}
+.ddlegend svg{width:100%;max-width:620px;height:auto;display:block;margin:0 auto}
+.ddgrid{display:grid;grid-template-columns:1fr;gap:14px;margin:10px 0}
+@media(min-width:760px){.ddgrid{grid-template-columns:1fr 1fr}}
+@media(min-width:1120px){.ddgrid{grid-template-columns:repeat(4,1fr)}}
+.dcol{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px;box-shadow:0 1px 2px rgba(15,23,42,.04);transition:transform .18s ease,box-shadow .18s ease;display:flex;flex-direction:column}
+.dcol:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(15,23,42,.09)}
+.dcol.flash{box-shadow:0 0 0 3px #f59e0b}
+.dcolhead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.dcolnum{font-size:11.5px;font-weight:700;color:#94a3b8;letter-spacing:1.2px;font-family:var(--font-mono)}
+.dcolname{font-size:14px;font-weight:600;color:#0f172a;text-transform:uppercase;letter-spacing:.05em}
+.dcolmode{font-size:12px;color:#64748b}
+.dcoltags{font-size:12px;color:#94a3b8;margin-top:3px}
+.dcolpos{font-size:12px;color:#64748b;margin:8px 0 4px}
+.spills{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}
+.spill{display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:999px;font-size:12px;font-weight:500;letter-spacing:-.01em;line-height:1.25;border:1px solid #e2e8f0;background:#f8fafc;color:#334155;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.spill:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(15,23,42,.12)}
+.spill .sdot{width:8px;height:8px;border-radius:50%;flex:none;background:#cbd5e1}
+.spill.lv1{background:#f1f5f9;border-color:#cbd5e1}
+.spill.lv1 .sdot{background:#93c5fd}
+.spill.lv2{background:#f0fdf4;border-color:#bbf7d0;color:#14532d}
+.spill.lv2 .sdot{background:#22c55e}
+.spill.lv3{background:#eff6ff;border-color:#93c5fd;color:#1e3a8a}
+.spill.lv3 .sdot{background:#3b82f6}
+.spill.target{border-color:#f59e0b;box-shadow:0 0 0 1px #f59e0b}
+.dcolfoot{margin-top:auto;padding-top:10px;border-top:1px solid #f1f5f9;font-size:12.5px;color:#64748b;display:flex;gap:12px;align-items:center}
+.dcolfoot b{color:#0f172a}
+.fdrunway{background:#fff;border:1px solid #e2e8f0;border-radius:14px;box-shadow:0 1px 2px rgba(15,23,42,.04);margin:4px 0;padding:14px 16px}
+.fdlabel{font-size:11.5px;font-weight:700;letter-spacing:1.5px;color:#94a3b8;margin-bottom:10px}
+</style>
+</head>
+<body>
+<div class="banner" id="storeBanner"><div class="wrap"><span data-s="storeWarn"></span><span><button class="btn sm" id="btnBackupNow" data-s="exportBtn"></button></span></div></div>
+
+<header class="topbar"><div class="wrap">
+  <div class="brand"><span class="dot"></span><span data-s="appTitle"></span></div>
+  <div class="seg" id="langSeg" role="group" aria-label="language">
+    <button data-lang="zh" class="on">中文</button><button data-lang="en">EN</button>
+  </div>
+  <div class="seg" id="viewSeg" role="group">
+    <button data-vm="private" class="on" data-s="vmPrivate"></button><button data-vm="public" data-s="vmPublic"></button>
+  </div>
+  <button class="iconbtn priv" id="btnSettings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span data-s="settings"></span></button>
+</div></header>
+
+<div class="heroesub"><div class="wrap"><span data-s="appSub"></span></div></div>
+
+<div class="banner" id="demoBanner"><div class="wrap">
+  <span data-s="demoNote"></span>
+  <button class="btn sm" id="btnStartMine" data-s="startMine"></button>
+</div></div>
+
+<main class="grid" id="mainGrid">
+  <section class="card full" id="progressCard">
+    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M12 6c-4 0-7 2-8 5 3 0 6-1 8-3 2 2 5 3 8 3-1-3-4-5-8-5z"/></svg><span data-s="overview"></span></h2>
+    <p class="sub" data-s="overviewSub"></p>
+    <div class="pstats">
+      <div class="pstat"><b id="statLit">0/47</b><span data-s="litCount"></span></div>
+      <div class="pstat"><b id="statMastery">0%</b><span data-s="mastery"></span></div>
+      <div class="pstat"><span class="stagechip" id="statStage">🌱</span><span data-s="growthStage" style="margin-top:4px"></span></div>
+    </div>
+    <div class="mbar"><i id="masteryBar" style="width:0%"></i></div>
+    <div class="branchbars" id="branchBars"></div>
+  </section>
+
+  <section class="card full" id="treeCard">
+    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg><span data-s="skillTree"></span></h2>
+    <p class="sub" data-s="skillTreeSub"></p>
+    <div class="chips" id="viewChips">
+      <button class="chip on" data-view="tree" data-s="viewTree"></button>
+      <button class="chip" data-view="dd" data-s="viewDD"></button>
+    </div>
+    <p class="ddsub" id="ddModeSub" data-s="ddModeSub" style="display:none"></p>
+    <div id="treeWrap"><svg id="treeSvg" viewBox="0 0 920 640" role="img" aria-label="skill tree"></svg></div>
+    <div id="ddView" style="display:none">
+      <div class="ddlegend"><svg id="ddLegend" viewBox="0 0 660 118" role="img" aria-label="double diamond legend"></svg></div>
+      <div class="ddgrid" id="ddGrid"></div>
+      <div class="fdrunway" id="fdRunway"></div>
+      <div id="ddAlert" style="display:none"></div>
+    </div>
+  </section>
+
+  <section class="card" id="gapCard">
+    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg><span data-s="gapTitle"></span></h2>
+    <p class="sub" data-s="gapSub"></p>
+    <div id="gapList"></div>
+  </section>
+
+  <section class="card" id="sprintCard">
+    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-s="sprintTitle"></span></h2>
+    <p class="sub" data-s="sprintSub"></p>
+    <div id="sprintBody"></div>
+  </section>
+
+  <section class="card priv" id="dropinCard">
+    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg><span data-s="dropTitle"></span></h2>
+    <p class="sub" data-s="dropSub"></p>
+    <textarea id="dropText" data-ph="dropPh"></textarea>
+    <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn sm" id="btnAnalyze" data-s="analyzeBtn"></button>
+      <span class="privnote" id="aiStatus"></span>
+    </div>
+    <div id="dropResult" style="margin-top:10px"></div>
+  </section>
+
+  <section class="card priv" id="jdCard">
+    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 9h8M8 13h8M8 17h5"/></svg><span data-s="jdTitle"></span></h2>
+    <p class="sub" data-s="jdSub"></p>
+    <input type="text" id="jdName" data-ph="jdNamePh" style="margin-bottom:8px">
+    <textarea id="jdText" data-ph="jdPh" style="min-height:110px"></textarea>
+    <div style="margin-top:8px"><button class="btn sm" id="btnScanJD" data-s="scanBtn"></button></div>
+    <div id="jdResult" style="margin-top:10px"></div>
+  </section>
+
+  <section class="card full priv" id="timelineCard">
+    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg><span data-s="timelineTitle"></span></h2>
+    <p class="sub" data-s="timelineSub"></p>
+    <div class="tl" id="timeline"></div>
+  </section>
+
+  <section class="card full" id="libCard">
+    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span data-s="libTitle"></span></h2>
+    <p class="sub" data-s="libSub"></p>
+    <div class="chips" id="libChips"></div>
+    <div id="libList"></div>
+  </section>
+
+  <section class="card full" id="reportCard">
+    <h2><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 17v-6m4 6V7m4 10v-3"/><path d="M3 21h18"/></svg><span data-s="reportTitle"></span></h2>
+    <p class="sub" data-s="reportSub"></p>
+    <button class="btn" id="btnReport" data-s="genReport"></button>
+    <div id="reportOut" style="margin-top:14px"></div>
+  </section>
+</main>
+
+<div id="scrim"></div>
+<aside id="drawer" aria-label="node detail"><div class="dhead"><div class="tt"><h3 id="dTitle"></h3><div class="meta" id="dMeta"></div></div><button class="iconbtn" id="dClose">✕</button></div><div class="dbody" id="dBody"></div></aside>
+
+<div class="modal" id="settingsModal"><div class="box">
+  <h3 data-s="settings"></h3>
+  <div class="frow"><label data-s="apiEndpoint"></label><input type="text" id="setEndpoint" placeholder="https://api.openai.com/v1/chat/completions"><small data-s="apiEndpointNote"></small></div>
+  <div class="frow"><label data-s="apiModel"></label><input type="text" id="setModel" placeholder="gpt-4o-mini"></div>
+  <div class="frow"><label data-s="apiKey"></label><input type="password" id="setKey" placeholder="sk-..." autocomplete="off"><small data-s="apiKeyNote"></small></div>
+  <div class="frow"><label class="checkline"><input type="checkbox" id="setRemember" style="width:auto"><span data-s="rememberKey"></span></label></div>
+  <div class="frow"><label data-s="dataMgmt"></label>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn sm ghost" id="btnExport" data-s="exportBtn"></button>
+      <button class="btn sm ghost" id="btnImport" data-s="importBtn"></button>
+      <input type="file" id="fileImport" accept="application/json" class="sr">
+      <button class="btn sm ghost" id="btnWipe" data-s="wipeBtn"></button>
+    </div>
+  </div>
+  <div style="text-align:right;margin-top:8px"><button class="btn" id="btnSettingsSave" data-s="saveBtn"></button>
+  <button class="btn ghost" id="btnSettingsClose" data-s="closeBtn" style="margin-left:8px"></button></div>
+</div></div>
+
+<footer class="foot"><div class="wrap">
+  <p data-s="footBase"></p>
+  <p data-s="footPrivacy"></p>
+</div></footer>
+
+<script>
+"use strict";
+/* =====================================================================
+   UXR Skill Tree Dashboard — single-file, local-first, no build step.
+/* ---------------- skill data: 47 skills, 7 branches ---------------- */
+const BRANCHES=[
+ {id:1,zh:"沟通与影响力",en:"Communication & Influence",avg:44,color:"#e8365d"},
+ {id:2,zh:"AI 研究能力",en:"AI Fluency",avg:41,color:"#7c5cff"},
+ {id:3,zh:"研究设计与综合",en:"Research Design & Synthesis",avg:32,color:"#2f9e8f"},
+ {id:4,zh:"战略与领导力",en:"Strategy & Leadership",avg:27,color:"#f2a03d"},
+ {id:5,zh:"定量研究方法",en:"Quantitative Methods",avg:26,color:"#3d7ef2"},
+ {id:6,zh:"领域与研究运营",en:"Domain & ResearchOps",avg:23,color:"#8a6d3b"},
+ {id:7,zh:"定性研究方法",en:"Qualitative Methods",avg:20,color:"#43b581"},
+];
+const PHASES=[
+ {id:"discover",n:1,zh:"发现",en:"Discover",tagZh:"发散 · 做对的事",tagEn:"Diverge · Build the right thing",
+  goalZh:"探索未定义的未知领域，降低初期决策风险。",goalEn:"Explore undefined problem spaces and de-risk early decisions.",
+  artZh:["原始洞察提炼","用户未满足需求清单","行为痛点集"],artEn:["Distilled raw insights","Unmet-needs backlog","Behavioral pain-point set"],spaceZh:"问题空间",spaceEn:"Problem Space",modeZh:"发散",modeEn:"Divergent",posZh:"生成式研究与未知问题挖掘",posEn:"Generative research & digging into unknown problems"},
+ {id:"define",n:2,zh:"定义",en:"Define",tagZh:"收敛 · 明确聚焦",tagEn:"Converge · Focus clearly",
+  goalZh:"将发散的信息收敛为全团队共识的问题模型与商业假设。",goalEn:"Converge scattered findings into a shared problem model and business hypotheses.",
+  artZh:["JTBD 框架","用户体验旅程图","问题定义陈述（HMW)"],artEn:["JTBD framework","UX journey map","Problem statement (HMW)"],spaceZh:"问题空间",spaceEn:"Problem Space",modeZh:"收敛",modeEn:"Convergent",posZh:"提炼核心心智模型与业务机会",posEn:"Distilling core mental models & business opportunities"},
+ {id:"develop",n:3,zh:"开发",en:"Develop",tagZh:"发散 · 探索方案",tagEn:"Diverge · Explore solutions",
+  goalZh:"早期方案概念探索，与设计、产研共创可行解。",goalEn:"Explore early concepts and co-create feasible solutions with design & engineering.",
+  artZh:["低保真原型测试反馈","共创工作坊白板","方案取舍评估"],artEn:["Lo-fi prototype test feedback","Co-creation workshop boards","Solution trade-off reviews"],spaceZh:"方案空间",spaceEn:"Solution Space",modeZh:"发散",modeEn:"Divergent",posZh:"早期方案概念验证与跨职能共创",posEn:"Early concept validation & cross-functional co-creation"},
+ {id:"deliver",n:4,zh:"交付",en:"Deliver",tagZh:"收敛 · 验证衡量",tagEn:"Converge · Validate & measure",
+  goalZh:"上线前严谨验证、可用性把关，上线后指标追踪与汇报。",goalEn:"Rigorous pre-launch validation, usability sign-off, post-launch tracking & reporting.",
+  artZh:["可用性测试报告","体验基准看板","A/B 实验复盘","Executive Summary"],artEn:["Usability test report","UX benchmark dashboard","A/B experiment retro","Executive Summary"],spaceZh:"方案空间",spaceEn:"Solution Space",modeZh:"收敛",modeEn:"Convergent",posZh:"严谨可用性把关与指标量化追踪",posEn:"Rigorous usability sign-off & metrics tracking"},
+];
+const FOUNDATION={id:"foundation",zh:"基础支撑与组织协同",en:"Foundation · Enablement & Org Alignment",
+ goalZh:"贯穿全流程的通用支撑能力，是所有产出的底座。",goalEn:"Cross-cutting capabilities underpinning every phase."};
+const DDCOL={
+ discover:[10,19,13,29,28,44],
+ define:[23,25,9,26,41,36,45],
+ develop:[21,27,11,14,42],
+ deliver:[15,8,16,30,22,20,4],
+ foundation:[1,6,7,17,32,40]
+};
+const DDORDER=["discover","define","develop","deliver"];
+function phName(ph){if(!ph)return "";if(ph==="foundation")return S.lang==="zh"?"基础支撑":"Foundation";const p=PHASES.find(x=>x.id===ph);return p?(S.lang==="zh"?p.zh:p.en):ph;}
+function hasCase(id){const st=S.star[id];return !!(st&&(st.s||st.a||st.r));}
+function caseTitle(id){const st=S.star[id]||{};const s=(bl(st.s)||"").replace(/\s+/g," ").trim();return s?s.slice(0,40)+(s.length>40?"…":""):"";}
+const DD={discover:{zh:"发现",en:"Discover"},define:{zh:"定义",en:"Define"},develop:{zh:"发散/测试",en:"Develop"},deliver:{zh:"落地/衡量",en:"Deliver"},x:{zh:"贯穿",en:"Cross-cutting"}};
+const SKILLS=[
+{id:1,br:1,zh:"跨职能协作",en:"Cross-Functional Collaboration",dem:82,ph:"foundation",
+ kw:["cross-functional","stakeholder","xfn","partner with pm","partner with engineering","collaborat","跨职能","利益相关"],
+ prac:{zh:["主动发起一次三方对齐会（PM/设计/工程），输出一页研究简报并追踪采纳情况"],en:["Run one triad alignment session (PM/design/eng); ship a one-page research brief and track adoption"]},
+ talk:{zh:"一分钟框架：我合作过的角色 → 我建立的协作机制（如固定节奏的 insight 分享）→ 一次分歧如何解决 → 带来的决策变化。",en:"1-min frame: who I partnered with → the cadence I set up (e.g. regular insight shares) → a disagreement I resolved → the decision it changed."}},
+{id:2,br:6,zh:"领域知识",en:"Domain expertise",dem:74,ph:null,
+ kw:["domain","fintech","healthcare","b2b saas","industry","领域","行业"],
+ prac:{zh:["为你目标行业画一张领域知识地图：关键业务指标、监管红线、用户角色"],en:["Map your target industry: key business metrics, regulatory red lines, user roles"]},
+ talk:{zh:"一分钟框架：我深耕的领域 → 该领域特有的研究挑战（如合规/术语）→ 我因此调整的方法 → 业务结果。",en:"1-min frame: my domain → its unique research challenges (e.g. compliance/jargon) → how I adapted methods → business outcome."}},
+{id:3,br:3,zh:"混合方法",en:"Mixed methods",dem:72,ph:null,
+ kw:["mixed methods","mixed-method","qual and quant","quant and qual","triangulation","混合方法"],
+ prac:{zh:["为一个产品问题设计 qual→quant 组合方案：先访谈提假设，再用问卷验证"],en:["Design a qual→quant combo for one product question: interviews for hypotheses, survey for validation"]},
+ talk:{zh:"一分钟框架：为什么单用一种方法不够 → 我的组合设计 → 两种数据如何互相印证 → 结论更可信的证据。",en:"1-min frame: why one method wasn't enough → my combo design → how the two datasets corroborated → why the conclusion is credible."}},
+{id:4,br:1,zh:"叙事与表达",en:"Storytelling & Exec Reporting",dem:70,ph:"deliver",
+ kw:["storytelling","storytell","communicat","presentation","narrative","data viz","visualization","讲故事","叙事"],
+ prac:{zh:["把一次研究报告改写成 5 页故事线版本：冲突→证据→建议，对比阅读完成率"],en:["Rewrite one report as a 5-slide story arc (tension → evidence → recommendation); compare read-through rate"]},
+ talk:{zh:"一分钟框架：听众是谁 → 我删掉了什么（克制）→ 留下的故事线 → 听众的行动。",en:"1-min frame: who the audience was → what I cut (restraint) → the story arc I kept → the action they took."}},
+{id:5,br:3,zh:"验证类研究",en:"Evaluative / validation research",dem:64,ph:null,
+ kw:["evaluative","validation","validate","usability test","concept test","验证","评估"],
+ prac:{zh:["为一个已上线功能做一次验证研究：定成功标准→测试→输出 go/no-go 建议"],en:["Run a validation study on a shipped feature: define success criteria → test → give a go/no-go call"]},
+ talk:{zh:"一分钟框架：要验证的风险假设 → 成功标准如何定 → 发现了什么 → 上线/回滚的决策。",en:"1-min frame: the risky assumption → how I set success criteria → what I found → the ship/rollback call."}},
+{id:6,br:1,zh:"高管影响力",en:"Executive Influence",dem:56,ph:"foundation",
+ kw:["executive","stakeholder influence","influence without authority","leadership","c-suite","vp","高管"],
+ prac:{zh:["准备一次给 VP 的 10 分钟汇报：只讲 3 个数字 + 1 个建议，演练电梯演讲"],en:["Prep a 10-min readout for a VP: 3 numbers + 1 recommendation; rehearse the elevator pitch"]},
+ talk:{zh:"一分钟框架：高管真正的顾虑 → 我如何用证据对齐业务语言 → 影响了哪个资源/优先级决策。",en:"1-min frame: the exec's real concern → how I translated evidence into business language → which resourcing call it moved."}},
+{id:7,br:4,zh:"带教",en:"Mentoring & Standards",dem:56,ph:"foundation",
+ kw:["mentor","coaching","coach","uplevel","raise the bar","带教","指导"],
+ prac:{zh:["带一位 junior/实习生完整走完一次研究：从立项到分享，输出复盘"],en:["Mentor a junior/intern through one full study, kickoff to shareout; write the retro"]},
+ talk:{zh:"一分钟框架：对方卡在哪里 → 我的辅导方式（提问而非给答案）→ 对方的成长 → 对团队的杠杆效应。",en:"1-min frame: where they were stuck → how I coached (questions, not answers) → their growth → the leverage for the team."}},
+{id:8,br:5,zh:"问卷设计与分析",en:"Survey Design & Sampling",dem:54,ph:"deliver",
+ kw:["survey","questionnaire","sampling","respondent","问卷","量表"],
+ prac:{zh:["独立设计一份 N≥200 的问卷：抽样框→题项→回收→清洗→输出洞察"],en:["Design and field an N≥200 survey solo: sampling frame → items → collection → cleaning → insights"]},
+ talk:{zh:"一分钟框架：研究问题 → 抽样与题项如何避免偏差 → 回收质量控制 → 关键发现。",en:"1-min frame: the research question → how sampling/items avoided bias → quality control → key finding."}},
+{id:9,br:4,zh:"研究战略/路线图",en:"Research Strategy & Roadmap",dem:52,ph:"define",
+ kw:["research strategy","roadmap","research agenda","strategic research","战略","路线图"],
+ prac:{zh:["为一个产品线写半年度研究路线图：机会清单→优先级→与 OKR 对齐"],en:["Write a half-year research roadmap for a product line: opportunity list → prioritization → OKR alignment"]},
+ talk:{zh:"一分钟框架：业务不确定性 → 我的研究议程如何排序 → 哪个研究改变了路线 → 长期影响。",en:"1-min frame: business uncertainty → how I sequenced the research agenda → which study changed course → long-term impact."}},
+{id:10,br:3,zh:"生成式/基础研究",en:"Generative Research",dem:48,ph:"discover",
+ kw:["generative","foundational","discovery research","exploratory","exploration","生成式","基础研究","发现"],
+ prac:{zh:["做一次生成式研究：定开放性问题→田野/访谈→输出机会地图"],en:["Run one generative study: open questions → field/interviews → opportunity map"]},
+ talk:{zh:"一分钟框架：未知领域 → 我如何框定探索范围 → 涌现的意外发现 → 催生的新方向。",en:"1-min frame: the unknown space → how I scoped exploration → the surprising emergence → the new direction it sparked."}},
+{id:11,br:2,zh:"AI 工作流提效",en:"AI Workflows & Tooling",dem:46,ph:"develop",
+ kw:["ai-native","ai-assisted","ai tools","chatgpt","claude","copilot","prompt","llm","workflow","AI 提效"],
+ prac:{zh:["用 LLM 搭建一条研究提效流水线：访谈转录→主题初筛→人工校验，记录省时比例"],en:["Build an LLM-assisted pipeline: transcripts → theme pre-coding → human verification; log time saved"]},
+ talk:{zh:"一分钟框架：哪个环节最耗时 → 我的 AI 工作流设计 → 人工校验如何保证质量 → 效率与风险的平衡。",en:"1-min frame: the most time-consuming step → my AI workflow design → how human verification guarded quality → the efficiency/risk balance."}},
+{id:12,br:1,zh:"端到端负责",en:"End-to-end ownership",dem:46,ph:null,
+ kw:["end-to-end","end to end","full lifecycle","ownership","own the research","端到端"],
+ prac:{zh:["独立负责一次完整研究：立项→招募→执行→分析→汇报→跟进落地"],en:["Own one study end-to-end: scoping → recruiting → running → analysis → readout → follow-through"]},
+ talk:{zh:"一分钟框架：模糊需求 → 我的拆解与计划 → 执行中的关键取舍 → 落地结果与复盘。",en:"1-min frame: the ambiguous ask → how I scoped and planned → key trade-offs in execution → shipped outcome and retro."}},
+{id:13,br:5,zh:"行为数据/埋点",en:"Behavioral Data & Telemetry",dem:40,ph:"discover",
+ kw:["behavioral data","telemetry","product analytics","amplitude","mixpanel","funnel","log analysis","埋点","行为数据"],
+ prac:{zh:["选一个漏斗：拉数据→找异常点→用定性研究解释原因→提优化建议"],en:["Pick a funnel: pull data → spot anomalies → explain with qual research → recommend fixes"]},
+ talk:{zh:"一分钟框架：数据告诉我什么、没告诉我什么 → 我如何与定性三角验证 → 避免的误判。",en:"1-min frame: what the data said and didn't say → how I triangulated with qual → the misjudgment I avoided."}},
+{id:14,br:1,zh:"速度-严谨平衡",en:"Speed vs. Rigor Balancing",dem:38,ph:"develop",
+ kw:["speed","rigor","fast-paced","ambiguity","scrappy","trade-off","pragmatic","严谨","取舍"],
+ prac:{zh:["做一次 48 小时极速研究：限定范围→输出一页纸结论，记录取舍"],en:["Run a 48-hour rapid study: constrained scope → one-page conclusion; log the trade-offs"]},
+ talk:{zh:"一分钟框架：时间压力 → 我砍掉了什么、保留了什么 → 为什么这个取舍是安全的 → 结果验证。",en:"1-min frame: the time pressure → what I cut vs kept → why the trade-off was safe → how the result held up."}},
+{id:15,br:7,zh:"可用性测试",en:"Usability Testing",dem:38,ph:"deliver",
+ kw:["usability","think-aloud","think aloud","moderated","unmoderated","usertesting","可用性测试"],
+ prac:{zh:["为一个核心流程做 5 场 think-aloud：任务设计→主持→问题分级→改版建议"],en:["Run 5 think-alouds on a core flow: tasks → moderation → issue severity → redesign suggestions"]},
+ talk:{zh:"一分钟框架：测试目标 → 任务设计逻辑 → 最致命的发现 → 改版前后的指标变化。",en:"1-min frame: test goal → task design logic → the most critical finding → metric change after redesign."}},
+{id:16,br:2,zh:"AI 产品评估",en:"AI Product Evaluation & Evals",dem:36,ph:"deliver",
+ kw:["ai evaluation","eval","llm-as-judge","rubric","hallucination","trust","hitl","human-in-the-loop","AI 评估"],
+ prac:{zh:["为一个 AI 功能设计评估 rubric：维度→样例→人工打分→与模型输出对比"],en:["Design an eval rubric for an AI feature: dimensions → samples → human rating → compare with model output"]},
+ talk:{zh:"一分钟框架：AI 功能的风险点 → 我的评估框架 → 发现的失败模式 → 上线标准。",en:"1-min frame: the AI feature's risks → my eval framework → failure modes found → the launch bar."}},
+{id:17,br:6,zh:"ResearchOps",en:"ResearchOps",dem:30,ph:"foundation",
+ kw:["researchops","research ops","panel","recruiting","operations","repository","研究运营","被试库"],
+ prac:{zh:["搭建一个最小被试库：招募渠道→筛选问卷→标签体系→邀约 SOP"],en:["Build a minimal participant panel: channels → screener → tagging → invite SOP"]},
+ talk:{zh:"一分钟框架：团队的运营痛点 → 我的 SOP/工具 → 招募与执行效率的变化。",en:"1-min frame: the team's ops pain → my SOP/tooling → the change in recruiting and execution speed."}},
+{id:18,br:6,zh:"B2B/企业软件",en:"B2B / enterprise software",dem:28,ph:null,
+ kw:["b2b","enterprise","saas","workflow","admin","企业软件"],
+ prac:{zh:["访谈 3 位 B2B 用户：画出他们的工作流与多角色协作图"],en:["Interview 3 B2B users; map their workflows and multi-role collaboration"]},
+ talk:{zh:"一分钟框架：B2B 与 C 端研究的差异 → 多角色/长链路的应对 → 发现的 workflow 洞察。",en:"1-min frame: how B2B research differs from B2C → handling multi-role, long workflows → the workflow insight found."}},
+{id:19,br:7,zh:"用户访谈",en:"In-Depth Interviews (IDIs)",dem:28,ph:"discover",
+ kw:["interview","1:1","in-depth","semi-structured","contextual inquiry","访谈","深访"],
+ prac:{zh:["做 5 场半结构化访谈：提纲→追问→编码→输出洞察"],en:["Run 5 semi-structured interviews: guide → probes → coding → insights"]},
+ talk:{zh:"一分钟框架：访谈目标 → 提纲设计与追问技巧 → 关键原话 → 引发的产品决策。",en:"1-min frame: interview goal → guide design and probing → the key quote → the product decision it drove."}},
+{id:20,br:5,zh:"统计分析",en:"Statistical Analysis",dem:28,ph:"deliver",
+ kw:["statistics","statistical","regression","anova","significance","p-value","统计","显著性"],
+ prac:{zh:["拿一份真实问卷数据：清洗→描述统计→做一次显著性检验→解读"],en:["Take a real survey dataset: clean → descriptives → one significance test → interpret"]},
+ talk:{zh:"一分钟框架：数据问题 → 选用的统计方法及前提 → 结果解读 → 业务含义（不说 p 值说人话）。",en:"1-min frame: the data question → method chosen and its assumptions → interpretation → business meaning in plain words."}},
+{id:21,br:7,zh:"概念测试",en:"Concept Testing & Prototypes",dem:26,ph:"develop",
+ kw:["concept test","prototype test","concept validation","概念测试","原型测试"],
+ prac:{zh:["为一个早期概念做测试：原型→测试脚本→5 用户→go/kill 建议"],en:["Test an early concept: prototype → script → 5 users → go/kill recommendation"]},
+ talk:{zh:"一分钟框架：概念的风险假设 → 原型保真度选择 → 用户的真实反应 → 建议与后续。",en:"1-min frame: the concept's risky assumptions → prototype fidelity choice → genuine user reactions → recommendation."}},
+{id:22,br:5,zh:"实验/A-B 测试",en:"Experimentation & A/B Testing",dem:26,ph:"deliver",
+ kw:["a/b","ab test","experiment","controlled experiment","randomized","实验","AB测试"],
+ prac:{zh:["设计一个 A/B 实验：假设→指标→样本量估算→解读模拟结果"],en:["Design an A/B test: hypothesis → metrics → sample-size estimate → interpret mock results"]},
+ talk:{zh:"一分钟框架：要验证的因果问题 → 实验设计与指标 → 潜在混杂因素 → 结论与边界。",en:"1-min frame: the causal question → design and metrics → confounders considered → conclusion and limits."}},
+{id:23,br:3,zh:"旅程地图/JTBD",en:"Journey Maps & JTBD",dem:26,ph:"define",
+ kw:["journey map","customer journey","jtbd","jobs to be done","task analysis","旅程地图"],
+ prac:{zh:["为一个核心场景画旅程地图：阶段→痛点→机会，输出一页机会清单"],en:["Map one core scenario: stages → pains → opportunities; ship a one-page opportunity list"]},
+ talk:{zh:"一分钟框架：为什么画这张图 → 数据来源 → 最大的断裂点 → 催生的路线改动。",en:"1-min frame: why this map → data sources → the biggest break point → the roadmap change it drove."}},
+{id:24,br:3,zh:"方法选型判断",en:"Method selection judgment",dem:26,ph:null,
+ kw:["method selection","right method","methodology","research design","方法选型","研究设计"],
+ prac:{zh:["写 3 个研究问题的选型分析：问题→候选方法→取舍→最终方案"],en:["Write method-selection analyses for 3 research questions: question → candidates → trade-offs → call"]},
+ talk:{zh:"一分钟框架：研究问题 → 我排除的方法及原因 → 最终选择 → 事后验证选择是否正确。",en:"1-min frame: the question → methods I ruled out and why → final pick → whether it proved right."}},
+{id:25,br:3,zh:"综合与三角验证",en:"Synthesis & Triangulation",dem:26,ph:"define",
+ kw:["synthesis","triangulation","triangulate","affinity","coding","综合","三角验证"],
+ prac:{zh:["拿 3 份不同来源的数据做一次三角验证：访谈+问卷+埋点→综合结论"],en:["Triangulate 3 sources once: interviews + survey + analytics → synthesized conclusion"]},
+ talk:{zh:"一分钟框架：互相矛盾的数据 → 我的综合框架 → 如何裁决冲突 → 更强的结论。",en:"1-min frame: conflicting data → my synthesis frame → how I resolved the conflict → the stronger conclusion."}},
+{id:26,br:1,zh:"商业敏锐度",en:"Business Acumen",dem:24,ph:"define",
+ kw:["business acumen","business outcome","roi","revenue","business impact","商业","业务"],
+ prac:{zh:["把你的一次研究发现翻译成业务语言：影响的指标→量级估算→一页纸"],en:["Translate one finding into business language: metric affected → magnitude estimate → one pager"]},
+ talk:{zh:"一分钟框架：研究发现 → 对应的业务指标 → 我估算的影响量级 → 业务方的反应。",en:"1-min frame: the finding → the business metric it touches → my magnitude estimate → how stakeholders reacted."}},
+{id:27,br:1,zh:"工作坊引导",en:"Co-Creation Workshops",dem:24,ph:"develop",
+ kw:["workshop","facilitation","facilitate","design sprint","co-creation","工作坊","引导"],
+ prac:{zh:["设计并引导一次 2 小时洞察工作坊：议程→引导→输出决策"],en:["Design and facilitate a 2-hour insight workshop: agenda → facilitation → decisions"]},
+ talk:{zh:"一分钟框架：工作坊目标 → 议程设计逻辑 → 难搞的参与者如何处理 → 产出的决策。",en:"1-min frame: workshop goal → agenda logic → handling a difficult participant → decisions produced."}},
+{id:28,br:7,zh:"日记研究/纵向追踪",en:"Diary Studies",dem:20,ph:"discover",
+ kw:["diary","longitudinal"," diary study","over time","日记研究","纵向"],
+ prac:{zh:["设计一次 7 天日记研究：任务包→提醒机制→回收分析"],en:["Design a 7-day diary study: task pack → nudges → analysis"]},
+ talk:{zh:"一分钟框架：为什么需要纵向视角 → 日记任务设计 → 参与者流失的应对 → 单次研究看不到的发现。",en:"1-min frame: why a longitudinal lens → diary task design → handling drop-off → what one-off studies missed."}},
+{id:29,br:7,zh:"田野/民族志",en:"Ethnography & Field Studies",dem:20,ph:"discover",
+ kw:["ethnography","field study","contextual","shadowing","observation","田野","民族志"],
+ prac:{zh:["做一次半日 shadowing：跟随用户真实场景→记录→提炼 3 个洞察"],en:["Do a half-day shadowing: follow real context → notes → 3 insights"]},
+ talk:{zh:"一分钟框架：为什么必须去现场 → 田野中的意外发现 → 实验室里得不到的洞察。",en:"1-min frame: why the field was necessary → the surprise found on site → insights a lab could never give."}},
+{id:30,br:5,zh:"UX 基准与度量",en:"UX Metrics & Benchmarking",dem:16,ph:"deliver",
+ kw:["benchmark","sus","supr-q","metrics","ux metrics","score","基准","度量"],
+ prac:{zh:["为一个产品建立 UX 基准：选指标→测基线→定目标→复测"],en:["Set a UX benchmark for a product: pick metrics → baseline → targets → re-measure"]},
+ talk:{zh:"一分钟框架：选了什么指标、为什么 → 基线数据 → 与竞品/历史的对比 → 驱动的改进。",en:"1-min frame: metrics chosen and why → baseline → comparison vs history/competitors → improvements driven."}},
+{id:31,br:6,zh:"增长/变现/定价研究",en:"Growth / monetization / pricing",dem:16,ph:null,
+ kw:["growth","monetization","pricing","packaging","paywall","conversion","增长","定价","变现"],
+ prac:{zh:["为一个定价页做 Van Westendorp 四问调研并输出价格带建议"],en:["Run a Van Westendorp pricing study and recommend a price band"]},
+ talk:{zh:"一分钟框架：增长/变现问题 → 研究设计 → 价格敏感度发现 → 上线后的转化变化。",en:"1-min frame: the growth/monetization question → study design → price-sensitivity finding → conversion change after launch."}},
+{id:32,br:6,zh:"研究伦理与隐私",en:"Ethics & Compliance",dem:16,ph:"foundation",
+ kw:["ethics","privacy","consent","gdpr","pipeda","irb","伦理","隐私","知情同意"],
+ prac:{zh:["为你的研究写一份知情同意书 + 数据处理清单（含脱敏规则）"],en:["Write a consent form + data-handling checklist (incl. de-identification rules) for your study"]},
+ talk:{zh:"一分钟框架：敏感场景 → 我的伦理预案 → 与法务/合规的协作 → 用户信任的体现。",en:"1-min frame: the sensitive context → my ethics plan → working with legal/compliance → how user trust showed."}},
+{id:33,br:5,zh:"Python/R",en:"Python / R for analysis",dem:14,ph:null,
+ kw:["python","pandas","r language","rstudio","scripting","jupyter"],
+ prac:{zh:["用 Python 复现一次问卷分析全流程：清洗→统计→可视化"],en:["Reproduce a survey analysis end-to-end in Python: clean → stats → visualize"]},
+ talk:{zh:"一分钟框架：为什么需要代码分析 → 我的脚本解决了什么重复劳动 → 可复用的沉淀。",en:"1-min frame: why code was needed → what drudgery my script removed → the reusable asset left behind."}},
+{id:34,br:5,zh:"SQL",en:"SQL",dem:14,ph:null,
+ kw:["sql","query","database","warehouse","snowflake","bigquery"],
+ prac:{zh:["独立写 SQL 拉一次行为数据：用户分群→留存→与问卷结果交叉"],en:["Pull behavioral data solo in SQL: cohorts → retention → cross with survey results"]},
+ talk:{zh:"一分钟框架：不等数分的场景 → 我的 SQL 如何定义指标 → 与 DS 对齐口径的经验。",en:"1-min frame: when waiting on DS wasn't an option → how my SQL defined metrics → aligning definitions with DS."}},
+{id:35,br:5,zh:"高级定量方法",en:"Advanced quant methods",dem:12,ph:null,
+ kw:["maxdiff","conjoint","kano","van westendorp","psychometrics","factor analysis","cluster","Kano"],
+ prac:{zh:["做一次 Kano 或 MaxDiff：问卷设计→分析→输出优先级排序"],en:["Run a Kano or MaxDiff: design → analysis → prioritized output"]},
+ talk:{zh:"一分钟框架：为什么普通问卷不够 → 方法原理一句话 → 优先级结论 → 落地验证。",en:"1-min frame: why a plain survey wasn't enough → the method in one sentence → prioritization call → validation."}},
+{id:36,br:3,zh:"人物画像",en:"Personas",dem:12,ph:"define",
+ kw:["persona","archetype","user types","segmentation","画像","人物画像"],
+ prac:{zh:["基于真实数据做一套人物画像：维度→命名→使用指南"],en:["Build personas from real data: dimensions → naming → usage guide"]},
+ talk:{zh:"一分钟框架：画像的数据来源 → 避免刻板印象的方法 → 团队真实在用的证据。",en:"1-min frame: data behind the personas → avoiding stereotypes → evidence the team actually uses them."}},
+{id:37,br:6,zh:"无障碍",en:"Accessibility",dem:10,ph:null,
+ kw:["accessibility","wcag","aoda","screen reader","a11y","inclusive","无障碍"],
+ prac:{zh:["做一次无障碍走查：键盘导航+读屏→记录障碍→提修复优先级"],en:["Run an a11y walkthrough: keyboard + screen reader → log barriers → fix priorities"]},
+ talk:{zh:"一分钟框架：法规/用户背景 → 测试方法 → 发现的关键障碍 → 修复与验证。",en:"1-min frame: regulatory/user context → test method → key barriers found → fixes and verification."}},
+{id:38,br:1,zh:"作品集",en:"Portfolio",dem:10,ph:null,
+ kw:["portfolio","case study","showcase","作品集"],
+ prac:{zh:["把一个 STAR 故事改写成作品集案例页：背景→方法→发现→影响"],en:["Rewrite one STAR story as a portfolio case page: context → method → findings → impact"]},
+ talk:{zh:"一分钟框架：选这个案例的原因 → 结构逻辑 → 如何证明你的独特价值。",en:"1-min frame: why this case → the narrative structure → how it proves your unique value."}},
+{id:39,br:4,zh:"研究民主化/赋能",en:"Democratization / enablement",dem:10,ph:null,
+ kw:["democratization","democratize","enablement","self-serve","coach","赋能","民主化"],
+ prac:{zh:["为 PM/设计写一份轻量研究 playbook：模板+checklist+评审机制"],en:["Write a lightweight research playbook for PMs/designers: templates + checklist + review"]},
+ talk:{zh:"一分钟框架：为什么要赋能 → 护栏如何设计（防劣质研究）→ 采纳率与质量数据。",en:"1-min frame: why enablement → guardrails against low-quality research → adoption and quality data."}},
+{id:40,br:6,zh:"研究知识库",en:"Research Repositories",dem:10,ph:"foundation",
+ kw:["repository","knowledge base","insights repository","dovetail","airtable","知识库"],
+ prac:{zh:["搭一个最小洞察库：标签体系→入库 10 条历史洞察→检索演示"],en:["Build a minimal insight repo: taxonomy → log 10 past insights → demo retrieval"]},
+ talk:{zh:"一分钟框架：知识流失的痛点 → 库的结构设计 → 被复用的实例。",en:"1-min frame: the knowledge-loss pain → repo structure → an instance of reuse."}},
+{id:41,br:3,zh:"心智模型/框架",en:"Mental Models & Frameworks",dem:8,ph:"define",
+ kw:["mental model","framework","opportunity map","conceptual model","心智模型","框架"],
+ prac:{zh:["为一个复杂任务画心智模型图：用户心智 vs 系统实现→差距清单"],en:["Draw a mental-model diagram for a complex task: user mind vs system → gap list"]},
+ talk:{zh:"一分钟框架：心智模型揭示了什么 → 与系统模型的差距 → 设计修正。",en:"1-min frame: what the mental model revealed → gaps vs the system model → design fixes."}},
+{id:42,br:7,zh:"参与式设计",en:"Participatory Design",dem:8,ph:"develop",
+ kw:["co-design","participatory","co-creation","workshop","参与式","协同设计"],
+ prac:{zh:["组织一次用户共创会：招募→引导→产出概念草图"],en:["Run a co-design session: recruit → facilitate → concept sketches"]},
+ talk:{zh:"一分钟框架：为什么让用户参与设计 → 引导技巧 → 用户产出的意外方案。",en:"1-min frame: why involve users in design → facilitation moves → the surprising concepts users produced."}},
+{id:43,br:6,zh:"国际化",en:"Internationalization",dem:6,ph:null,
+ kw:["international","global","localization","cross-cultural","跨文化","国际化","本地化"],
+ prac:{zh:["为一次跨文化研究写执行手册：翻译校验→本地招募→文化禁忌清单"],en:["Write a cross-cultural field manual: translation checks → local recruiting → taboo list"]},
+ talk:{zh:"一分钟框架：文化差异假设 → 田野中的验证/证伪 → 对产品本地化的影响。",en:"1-min frame: the cultural hypothesis → field validation/falsification → impact on localization."}},
+{id:44,br:6,zh:"市场研究",en:"Market Research & PMF",dem:6,ph:"discover",
+ kw:["market research","sizing","competitive","benchmarking","icp","pmf","市场研究","竞品"],
+ prac:{zh:["做一次竞品 teardown：维度→打分→差距机会清单"],en:["Do a competitive teardown: dimensions → scoring → gap-opportunity list"]},
+ talk:{zh:"一分钟框架：商业问题 → 研究框架 → 关键竞品洞察 → 战略建议。",en:"1-min frame: the business question → research frame → key competitive insight → strategic call."}},
+{id:45,br:3,zh:"用户分群",en:"User Segmentation",dem:6,ph:"define",
+ kw:["segmentation","segment","cluster","cohort","分群","细分"],
+ prac:{zh:["用一份问卷数据做一次聚类分群→命名→画像化"],en:["Cluster a survey dataset → name segments → personify"]},
+ talk:{zh:"一分钟框架：为什么需要分群 → 分群依据 → 各群的差异化策略。",en:"1-min frame: why segment → basis used → differentiated strategy per segment."}},
+{id:46,br:6,zh:"英法双语",en:"Bilingual FR/EN",dem:4,ph:null,
+ kw:["bilingual","french","francophone","双语","法语"],
+ prac:{zh:["把一份访谈提纲翻译成法语并做回译校验"],en:["Translate an interview guide into French with back-translation checks"]},
+ talk:{zh:"一分钟框架：双语场景 → 翻译质量控制 → 发现的语义差异。",en:"1-min frame: the bilingual context → translation QA → semantic differences found."}},
+{id:47,br:7,zh:"焦点小组",en:"Focus groups",dem:2,ph:null,
+ kw:["focus group","fgd","group discussion","焦点小组"],
+ prac:{zh:["设计并主持一次焦点小组：流程→群体动力引导→综合"],en:["Design and moderate one focus group: flow → group dynamics → synthesis"]},
+ talk:{zh:"一分钟框架：为什么用焦点小组而非访谈 → 群体动力的引导 → 达成的共识/分歧。",en:"1-min frame: why focus groups over interviews → managing group dynamics → consensus/divergence reached."}},
+];
+/* ---------------- curated resource library (Miranda, 2026-10-11) ----------------
+   Direct URLs + one-line highlights. Each entry attaches to 1-3 skills. */
+const RESLIB=[
+{id:"r1",br:1,tp:{zh:"播客单期",en:"Podcast"},title:"Lenny's Newsletter: The UX Research Reckoning Is Here",url:"https://www.lennysnewsletter.com/p/the-ux-research-reckoning-is-here",sk:[1,6],
+ hl:{zh:"关于研究职能的宏观/中观/微观分层（Macro, Mid, Micro），以及 UXR 在组织中定位的深度思考。",en:"Macro, Mid, and Micro research modes — and a deep take on where UXR sits in the org."}},
+{id:"r2",br:1,tp:{zh:"播客单期",en:"Podcast"},title:"Lenny's Newsletter: Making better decisions — Annie Duke",url:"https://www.lennysnewsletter.com/p/making-better-decisions-annie-duke",sk:[1,6],
+ hl:{zh:"面对利益相关者分歧时，用概率思维和“Kill Criteria”推进行动，解决无职权影响力的难题。",en:"Using probabilistic thinking and 'kill criteria' to move forward amid stakeholder disagreement — influence without authority."}},
+{id:"r3",br:1,tp:{zh:"文章",en:"Article"},title:"First Round Review: The Art of the Executive Summary",url:"https://review.firstround.com/",sk:[4],
+ hl:{zh:"硅谷风投推崇的 1 页纸高管汇报框架，把研究发现翻译为商业决策语言。",en:"The one-page exec-summary framework beloved in Silicon Valley for translating findings into decision language."}},
+{id:"r4",br:1,tp:{zh:"案例",en:"Case study"},title:"GitLab Handbook: UX Research",url:"https://about.gitlab.com/handbook/product/ux/ux-research/",sk:[1,12],
+ hl:{zh:"敏捷团队内与 PM/设计做 Scoping 对齐、争论和优先级排序的标准模板。",en:"Standard templates for scoping alignment, debate and prioritization with PM/design in agile teams."}},
+{id:"r5",br:1,tp:{zh:"作品集",en:"Portfolio"},title:"Nadia Piet Portfolio: Case Studies",url:"https://nadiapiet.com/",sk:[27,1],
+ hl:{zh:"看她如何通过 Workshop Facilitation（共创工作坊）驱动多利益相关方战略对齐。",en:"How she drives multi-stakeholder strategic alignment through workshop facilitation."}},
+{id:"r6",br:2,tp:{zh:"播客单期",en:"Podcast"},title:"Cognitive Revolution: How AI is Changing UX and Product Research — Dr. Jakob Nielsen",url:"https://www.cognitiverevolution.ai/",sk:[16,11],
+ hl:{zh:"生成式 AI 如何重构定性研究编码，以及大模型界面在交互一致性上的核心评测维度。",en:"How generative AI reshapes qualitative coding, plus core eval dimensions for LLM interface consistency."}},
+{id:"r7",br:2,tp:{zh:"播客单期",en:"Podcast"},title:"Latent Space: AI Evals & LLM Benchmarking in Production — Hamel Husain",url:"https://www.latent.space/",sk:[16],
+ hl:{zh:"技术视角拆解 LLM Evals 与人机回环评测（Human-in-the-loop），帮 UXR 建立大模型信任与评估的硬核语言体系。",en:"A technical teardown of LLM evals and human-in-the-loop review — building rigorous trust-and-eval vocabulary for UXR."}},
+{id:"r8",br:2,tp:{zh:"规范",en:"Guideline"},title:"Google PAIR: People + AI Guidebook",url:"https://pair.withgoogle.com/guidebook/",sk:[16],
+ hl:{zh:"“Mental Models”、“Explainability & Trust”、“Errors + Graceful Failure”实操测试清单。",en:"Hands-on checklists for mental models, explainability & trust, errors and graceful failure."}},
+{id:"r9",br:2,tp:{zh:"规范",en:"Guideline"},title:"Microsoft HAX Workbook: Guidelines for Human-AI Interaction",url:"https://www.microsoft.com/en-us/haxtoolkit/ai-guidelines/",sk:[16],
+ hl:{zh:"18 条人机协同交互指南，可直接作为 AI 产品可用性评测打分量表。",en:"18 human-AI interaction guidelines that double as an AI usability eval rubric."}},
+{id:"r10",br:2,tp:{zh:"作品集",en:"Portfolio"},title:"Felipe Casadei Portfolio",url:"https://felipecasadei.ai/",sk:[16,11],
+ hl:{zh:"针对电商与智能助手 AI 产品设计的完整信任评测、人机交互可用性实验案例。",en:"Full trust-evaluation and HCI usability experiments for e-commerce and AI-assistant products."}},
+{id:"r11",br:3,tp:{zh:"播客单期",en:"Podcast"},title:"Mixed Methods Podcast: Triangulation and Evidence Rigor in Product Decisions",url:"https://mixed-methods.org/",sk:[3,25],
+ hl:{zh:"多源数据冲突时，用定性深访结合日志数据做扎实三角验证（Triangulation）。",en:"Triangulating conflicting data with deep interviews plus log data for rigorous evidence."}},
+{id:"r12",br:3,tp:{zh:"播客单期",en:"Podcast"},title:"Awkward Silences: Roy Olende – So You Want to Be in Research Ops?",url:"https://podcast.userinterviews.com/episodes/55-so-you-want-to-be-in-research-ops-how-roy-olende-of-zapier-made-the-switch",sk:[3,24],
+ hl:{zh:"Roy Olende 从设计师转型 ResearchOps：如何在 Zapier 把研究运营做成一门职业。",en:"Roy Olende's switch from designer to ResearchOps: building research ops as a career at Zapier."}},
+{id:"r13",br:3,tp:{zh:"视频",en:"Video"},title:"NN/g YouTube 频道",url:"https://www.youtube.com/@NNgroup",sk:[25],
+ hl:{zh:"NN/g 官方 YouTube 频道：可用性、UX 研究方法与职业发展视频。",en:"The official NN/g YouTube channel: usability, UX research methods, and career videos."}},
+{id:"r14",br:3,tp:{zh:"案例",en:"Case study"},title:"Simon Pan: Uber Movement Case Study",url:"https://simonpan.com/work/uber/",sk:[10,41],
+ hl:{zh:"北美公认 UX 黄金范式，生成式研究、问题重塑与心智模型构建全过程。",en:"The celebrated UX case study: generative research, problem reframing and mental-model building end to end."}},
+{id:"r15",br:3,tp:{zh:"规范",en:"Guideline"},title:"18F UX Methods: Methods Cards",url:"https://web.archive.org/web/2024/https://methods.18f.gov/",sk:[24],
+ hl:{zh:"每个方法点开即有适用场景、输入产出及步骤规范（18F 已于 2025 年关闭，此为网页归档版本）。",en:"Every method card lists when to use it, inputs/outputs and step-by-step guidance (18F shut down in 2025; archived copy)."}},
+{id:"r16",br:4,tp:{zh:"播客单期",en:"Podcast"},title:"Lenny's Newsletter: Teresa Torres on how to interview",url:"https://www.lennysnewsletter.com/p/teresa-torres-on-how-to-interview",sk:[9,39],
+ hl:{zh:"搭建“机会解决方案树（OST）”，推动全团队建立持续研究习惯（研究民主化）。",en:"Building opportunity solution trees to drive continuous discovery habits across the team."}},
+{id:"r17",br:4,tp:{zh:"播客单期",en:"Podcast"},title:"Dollars to Donuts #45: Leanne Waldal (ex-Dropbox/Splunk)",url:"https://portigal.com/podcast/43-leanne-waldal-returns/",sk:[7,9],
+ hl:{zh:"中高级研究员如何建立团队研究标准、辅导 Junior、在公司层面制定研究路线图。",en:"How senior researchers set team standards, mentor juniors and define company-level research roadmaps."}},
+{id:"r18",br:4,tp:{zh:"文章",en:"Article"},title:"Dovetail: How Atlassian Scales Customer Research",url:"https://dovetail.com/customers/atlassian/",sk:[39],
+ hl:{zh:"Atlassian 如何通过分级培训让非 UXR 人员自主做合规访谈，同时保护团队研究水位。",en:"How Atlassian tiers training so non-researchers run compliant interviews without lowering the bar."}},
+{id:"r19",br:4,tp:{zh:"规范",en:"Guideline"},title:"GitLab Handbook: UX Research",url:"https://about.gitlab.com/handbook/product/ux/ux-research/",sk:[9],
+ hl:{zh:"计算需求权重、拒绝低优先级请求、规划季度研究路线图。",en:"Weighting requests, saying no to low-priority asks, and planning quarterly research roadmaps."}},
+{id:"r20",br:5,tp:{zh:"播客单期",en:"Podcast"},title:"MeasuringU Podcast: Measuring Usability with SUS and UMUX-Lite",url:"https://measuringu.com/",sk:[30,8],
+ hl:{zh:"标准度量工具的打分逻辑、置信区间及样本量设定。",en:"Scoring logic, confidence intervals and sample-size setup for standard UX metrics."}},
+{id:"r21",br:5,tp:{zh:"播客单期",en:"Podcast"},title:"Lenny's Newsletter: The ultimate guide to A/B testing",url:"https://www.lennysnewsletter.com/p/the-ultimate-guide-to-ab-testing",sk:[22,13],
+ hl:{zh:"因果推断陷阱、样本偏误与行为数据解读。",en:"Causal-inference pitfalls, sample bias and reading behavioral data correctly."}},
+{id:"r22",br:5,tp:{zh:"工具",en:"Tool"},title:"MeasuringU: Sample Size Calculator & Confidence Interval Tools",url:"https://measuringu.com/calculators/problem_discovery/",sk:[8,20],
+ hl:{zh:"面试与写报告时算定量问卷、可用性测试样本量的基准工具。",en:"The go-to calculator for survey and usability-test sample sizes in interviews and reports."}},
+{id:"r23",br:5,tp:{zh:"案例",en:"Case study"},title:"Spotify Design: Triangulating Listening Behaviors and User Intent",url:"https://spotify.design/",sk:[13,8],
+ hl:{zh:"搜索其 Research 标签长文，看如何把播放日志（Telemetry）与大规模问卷做交叉分析。",en:"Search their Research tag: how play-log telemetry is crossed with large-scale surveys."}},
+{id:"r24",br:5,tp:{zh:"作品集",en:"Portfolio"},title:"Felipe Casadei: Quant Benchmarking Project",url:"https://felipecasadei.ai/",sk:[34,33,20],
+ hl:{zh:"从 SQL/Python 抓数据到统计分析图表的完整展示。",en:"End-to-end showcase: from SQL/Python data pulls to statistical charts."}},
+{id:"r25",br:6,tp:{zh:"播客单期",en:"Podcast"},title:"Awkward Silences: Building a ResearchOps Practice from Scratch — Lucy Walsh",url:"https://www.userinterviews.com/podcast",sk:[17],
+ hl:{zh:"参与者招募漏斗、预算控制、减少招募流失率的实操技巧。",en:"Recruiting funnels, budget control and reducing no-shows — ResearchOps tactics."}},
+{id:"r26",br:6,tp:{zh:"播客单期",en:"Podcast"},title:"Mixed Methods Podcast: Research Ethics and Privacy Governance",url:"https://mixed-methods.org/",sk:[32],
+ hl:{zh:"跨国企业在 GDPR/PIPEDA 约束下合法留存与脱敏用户录音录屏。",en:"How global companies retain and de-identify recordings compliantly under GDPR/PIPEDA."}},
+{id:"r27",br:6,tp:{zh:"规范",en:"Guideline"},title:"ResearchOps Community: The ResearchOps Toolkit & Framework",url:"https://researchops.community/",sk:[17],
+ hl:{zh:"全球社区的被试招募、奖励结算、知情同意书（Consent Form）模板库。",en:"Community templates for recruiting, incentives and consent forms."}},
+{id:"r28",br:6,tp:{zh:"规范",en:"Guideline"},title:"UK Government Service Manual: User Research Ethics and Consent",url:"https://www.gov.uk/service-manual/user-research/managing-user-research-data-participant-privacy",sk:[32],
+ hl:{zh:"公共服务伦理合规与研究数据脱敏流程文档。",en:"Ethics compliance and data de-identification for public-service research."}},
+{id:"r29",br:6,tp:{zh:"案例",en:"Case study"},title:"Salesforce Design: Enterprise Complexity & Workflow Modeling",url:"https://medium.com/salesforce-ux",sk:[18,2],
+ hl:{zh:"多角色权限、B2B 表单流程及企业级复杂业务系统的研究实战。",en:"Research in the wild: multi-role permissions and complex B2B workflows."}},
+{id:"r30",br:7,tp:{zh:"播客单期",en:"Podcast"},title:"Dollars to Donuts #42: Judd Antin — Conducting Strategic Field Research",url:"https://portigal.com/podcast/7-judd-antin-of-airbnb/",sk:[19,29],
+ hl:{zh:"高价值定性访谈的提问心法，挖掘深层未满足需求与心理动机。",en:"Questioning craft for high-value interviews: surfacing unmet needs and motivations."}},
+{id:"r31",br:7,tp:{zh:"播客单期",en:"Podcast"},title:"UX Podcast: Think Aloud Usability Testing with Steve Krug",url:"https://uxpodcast.com/",sk:[15],
+ hl:{zh:"出声思考可用性测试实战，避免引导性提问、捕捉关键行为摩擦点。",en:"Think-aloud in practice: avoiding leading questions, catching behavioral friction."}},
+{id:"r32",br:7,tp:{zh:"文章",en:"Article"},title:"NN/g: Thinking Aloud: The #1 Usability Tool",url:"https://www.nngroup.com/articles/thinking-aloud-the-1-usability-tool/",sk:[15],
+ hl:{zh:"Jakob Nielsen 亲笔的出声思考法规范指南与动作拆解。",en:"Jakob Nielsen's own guide to the think-aloud method, step by step."}},
+{id:"r33",br:7,tp:{zh:"指南",en:"Guide"},title:"Maze: Modern Unmoderated Usability Testing Guide",url:"https://maze.co/guides/usability-testing/",sk:[15],
+ hl:{zh:"敏捷团队跑非主持式可用性测试的配置方案与指标收集。",en:"Setup and metrics for unmoderated usability testing in agile teams."}},
+{id:"r34",br:7,tp:{zh:"作品集",en:"Portfolio"},title:"Cofolios: Top Tech Design & Research Portfolios",url:"https://cofolios.com/",sk:[15,38],
+ hl:{zh:"北美大厂（Figma/Google/Meta）真实展示 Moderated/Unmoderated 可用性测试全流程的案例。",en:"Real Big-Tech cases showing moderated/unmoderated usability testing end to end."}},
+];
+const SKILL_RES={};
+RESLIB.forEach(r=>r.sk.forEach(id=>{(SKILL_RES[id]=SKILL_RES[id]||[]).push(r);}));
+/* fallback plain-text resource for skills with no curated entry (no URLs invented) */
+const FBT={book:{zh:"书",en:"Book"},article:{zh:"文章",en:"Article"}};
+const FALLBACK={
+ 5:{t:"book",title:"Rocket Surgery Made Easy — Steve Krug"},
+ 14:{t:"book",title:"Just Enough Research — Erika Hall"},
+ 21:{t:"book",title:"Testing Business Ideas — Bland & Osterwalder"},
+ 23:{t:"book",title:"Mapping Experiences — Jim Kalbach"},
+ 26:{t:"book",title:"Lean Analytics — Croll & Yoskovitz"},
+ 28:{t:"article",title:"NN/g: Diary Studies — a practical guide"},
+ 31:{t:"book",title:"Hooked — Nir Eyal"},
+ 36:{t:"book",title:"About Face — Alan Cooper"},
+ 37:{t:"article",title:"W3C: WCAG accessibility guidelines"},
+ 40:{t:"article",title:"NN/g: Research repositories in practice"},
+ 42:{t:"book",title:"Gamestorming — Gray et al."},
+ 43:{t:"book",title:"The Field Study Handbook — Jan Chipchase"},
+ 44:{t:"book",title:"Lean Analytics — Croll & Yoskovitz"},
+ 45:{t:"book",title:"Quantifying the User Experience — Sauro & Lewis"},
+ 35:{t:"book",title:"Quantifying the User Experience — Sauro & Lewis"},
+ 46:{t:"article",title:"W3C Internationalization: multilingual research resources"},
+ 47:{t:"book",title:"Observing the User Experience — Goodman et al."}
+};
+function resHTML(id){
+  const zh=S.lang==="zh";
+  const items=(SKILL_RES[id]||[]).map(r=>
+   `<div class="resitem"><span class="tp">${esc(zh?r.tp.zh:r.tp.en)}</span><br>`+
+   `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a>`+
+   `<small>${esc(zh?r.hl.zh:r.hl.en)}</small></div>`).join("");
+  const fb=FALLBACK[id];
+  const fbH=fb?`<div class="resitem"><span class="tp">${esc(zh?FBT[fb.t].zh:FBT[fb.t].en)}</span><br>${esc(fb.title)}</div>`:"";
+  return items+fbH;
+}
+/* ---------------- demo persona (fictional) ---------------- */
+const DEMO={
+ lang:"en",
+ levels:{1:2,2:1,3:2,4:2,5:1,6:1,7:0,8:2,9:1,10:1,11:2,12:2,13:1,14:2,15:3,16:1,17:1,18:0,19:2,20:1,21:2,22:0,23:2,24:1,25:2,26:1,27:2,28:0,29:1,30:1,31:0,32:1,33:0,34:1,35:0,36:1,37:0,38:2,39:1,40:1,41:0,42:0,43:0,44:1,45:0,46:0,47:2},
+ checkins:[
+  {id:"c1",ts:Date.now()-86400000*2,skill:15,from:2,to:3,evidence:{zh:"Demo：主持了第 20 场可用性测试，开始带新人旁听",en:"Demo: moderated my 20th usability test; started bringing a new hire to shadow"}},
+  {id:"c2",ts:Date.now()-86400000*9,skill:11,from:1,to:2,evidence:{zh:"Demo：用 LLM 跑通了访谈纪要初筛流程",en:"Demo: got an LLM pipeline working for first-pass interview-note triage"}},
+  {id:"c3",ts:Date.now()-86400000*21,skill:8,from:1,to:2,evidence:{zh:"Demo：独立完成了 N=230 的问卷",en:"Demo: independently completed an N=230 survey"}}
+ ],
+ notes:[{id:"n1",ts:Date.now()-86400000*5,skill:11,
+  text:{zh:"Demo 笔记：读完《AI Engineering》前三章，eval 的核心是 rubric 先行。",en:"Demo note: finished ch. 1–3 of AI Engineering — evals start with the rubric."},
+  points:[{zh:"Eval 先定 rubric 再跑模型",en:"Define the rubric before running the model"},{zh:"人工抽查是质量底线",en:"Human spot-checks are the quality floor"},{zh:"小样本迭代比大样本一次到位更省",en:"Small-sample iterations beat one big-bang run"}],suggested:2}],
+ reflections:{15:{zh:"Demo 反思：主持时追问还可以更克制。",en:"Demo reflection: I could probe less aggressively when moderating."}},
+ star:{15:{s:{zh:"Demo S/T：在 Demo 项目 A 改版前需要验证新流程",en:"Demo S/T: needed to validate the new flow before the Demo Project A redesign"},
+  a:{zh:"Demo A：设计 5 个任务，主持 6 场测试",en:"Demo A: designed 5 tasks and moderated 6 sessions"},
+  r:{zh:"Demo R：发现 3 个致命问题，改版后完成率提升",en:"Demo R: found 3 critical issues; completion rate improved after the redesign"}}},
+ sprint:{title:{zh:"Demo 冲刺岛",en:"Demo sprint island"},month:"2026-10",targets:[{skill:16,from:1,to:2},{skill:20,from:1,to:2}]},
+ jdScans:[]
+};
+/* bilingual helper: {zh,en} objects (demo) vs plain user strings */
+const bl=v=>(v&&typeof v==="object"&&("zh" in v||"en" in v))?(S.lang==="zh"?v.zh:v.en):v;
+/* ---------------- state & storage ---------------- */
+const LSKEY="uxr-skill-tree-v1";
+let memOnly=false, memStore=null, saveTimer=null;
+const S={lang:"en",mode:"demo",levels:{},checkins:[],notes:[],reflections:{},star:{},
+ sprint:{title:"",month:"",targets:[]},jdScans:[],
+ api:{endpoint:"https://api.openai.com/v1/chat/completions",model:"gpt-4o-mini",key:"",remember:false},
+ ui:{view:"tree",dd:"all",public:false,ddv:"methods",qscan:false}};
+function storeGet(){try{const v=localStorage.getItem(LSKEY);return v?JSON.parse(v):null;}catch(e){return memStore;}}
+function storeSet(o){
+  const payload=Object.assign({},o);
+  if(payload.api&&!payload.api.remember){payload.api=Object.assign({},payload.api,{key:""});}
+  try{localStorage.setItem(LSKEY,JSON.stringify(payload));memOnly=false;}
+  catch(e){memOnly=true;memStore=payload;}
+  document.getElementById("storeBanner").classList.toggle("show",memOnly);
+}
+function saveSoon(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>storeSet(S),400);}
+function persist(){clearTimeout(saveTimer);storeSet(S);}
+function freshPersonal(lang){
+  return {v:1,mode:"personal",lang:lang||"en",levels:{},checkins:[],notes:[],reflections:{},star:{},
+   sprint:{title:"",month:"",targets:[]},jdScans:[],
+   api:{endpoint:"https://api.openai.com/v1/chat/completions",model:"gpt-4o-mini",key:"",remember:false},
+   ui:{view:"tree",dd:"all",public:false,ddv:"methods",qscan:false}};
+}
+/* portfolio cases as editable STAR drafts */
+const CASES={
+ luckykoi:{zh:{s:"S/T：求职 AI 插件 Luckykoi 上线前，需要验证 AI 生成的求职建议是否可用、是否值得信任。",
+   a:"A：独立设计并主持 5 场 think-aloud，任务覆盖核心求职流程，同步收集用户对 AI 建议的信任度反馈。",
+   r:"R：留存从 30% 提升至 42%（+12pp），关键可用性问题全部修复后上线。",
+   ev:"作品集案例 Luckykoi：5 场 think-aloud，留存 30%→42%（草稿可改）"},
+  en:{s:"S/T: Before launching the Luckykoi job-seeking AI plugin, we needed to validate whether AI-generated advice was usable and trustworthy.",
+   a:"A: Designed and moderated 5 think-aloud sessions covering the core job-seeking flow, collecting trust feedback on AI suggestions.",
+   r:"R: Retention rose from 30% to 42% (+12pp); all critical usability issues fixed before launch.",
+   ev:"Portfolio case Luckykoi: 5 think-alouds, retention 30%→42% (draft — editable)"}},
+ sylvox:{zh:{s:"S/T：户外电视品牌 Sylvox 需要明确北美市场定位。",
+   a:"A：主持 FGD（N=19）深挖户外生活态度；独立设计并执行问卷（N=416）验证定位假设。",
+   r:"R：提炼出 “Feel Good, Live Outdoors” 品牌定位，广告 CTR +10%。",
+   ev:"作品集案例 Sylvox：FGD N=19 + 问卷 N=416，CTR+10%（草稿可改）"},
+  en:{s:"S/T: Outdoor TV brand Sylvox needed a clear North America positioning.",
+   a:"A: Moderated FGDs (N=19) on outdoor-living attitudes; designed and fielded a survey (N=416) to validate positioning hypotheses.",
+   r:"R: Landed on 'Feel Good, Live Outdoors'; ad CTR +10%.",
+   ev:"Portfolio case Sylvox: FGD N=19 + survey N=416, CTR +10% (draft — editable)"}},
+ oppo:{zh:{s:"S/T：OPPO 印度市场需要理解本地用户的手机使用习惯与功能优先级。",
+   a:"A：执行田野民族志走访，并用 Kano 模型分析功能需求优先级。",
+   r:"R：FlexDrop 与 36-Month Fluency 功能全球上线，覆盖 5 亿+设备。",
+   ev:"作品集案例 OPPO India：民族志 + Kano，全球 5 亿+设备（草稿可改）"},
+  en:{s:"S/T: OPPO India needed to understand local mobile habits and feature priorities.",
+   a:"A: Ran field ethnography and applied the Kano model to prioritize features.",
+   r:"R: FlexDrop and 36-Month Fluency shipped globally, reaching 500M+ devices.",
+   ev:"Portfolio case OPPO India: ethnography + Kano, 500M+ devices (draft — editable)"}}
+};
+const CASEMAP={15:"luckykoi",19:"luckykoi",16:"luckykoi",47:"sylvox",8:"sylvox",36:"sylvox",44:"sylvox",29:"oppo",35:"oppo",43:"oppo"};
+const PREFILL_USED=[15,19,47,8,29,35,43];
+function applyPrefill(){
+  const L=S.lang;
+  PREFILL_USED.forEach(id=>{
+    S.levels[id]=2;
+    const ck=CASEMAP[id], ev=CASES[ck][L].ev;
+    S.checkins.push({id:"p"+id,ts:Date.now(),skill:id,from:0,to:2,evidence:ev});
+    const c=CASES[ck][L];
+    S.star[id]={s:c.s,a:c.a,r:c.r,draft:true};
+  });
+}
+/* ---------------- utils ---------------- */
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const sk=id=>SKILLS.find(s=>s.id===id);
+const br=id=>BRANCHES.find(b=>b.id===id);
+const lv=id=>S.levels[id]||0;
+const lvName=l=>t("lv"+l), lvColor=l=>["var(--lv0)","var(--lv1)","var(--lv2)","var(--lv3)"][l];
+const skName=s=>S.lang==="zh"?s.zh:s.en;
+const brName=b=>S.lang==="zh"?b.zh:b.en;
+const fmtD=ts=>new Date(ts).toLocaleDateString(S.lang==="zh"?"zh-CN":"en-US",{month:"short",day:"numeric"});
+const tierOf=dem=>dem>=50?"hi":dem>=30?"mh":dem>=15?"md":"lo";
+function applyI18n(){
+  document.documentElement.lang=S.lang==="zh"?"zh":"en";
+  document.querySelectorAll("[data-s]").forEach(el=>{const v=t(el.dataset.s);if(typeof v==="string")el.textContent=v;});
+  document.querySelectorAll("[data-ph]").forEach(el=>{el.placeholder=t(el.dataset.ph)||"";});
+  document.querySelectorAll("#langSeg button").forEach(b=>b.classList.toggle("on",b.dataset.lang===S.lang));
+  document.querySelectorAll("#viewSeg button").forEach(b=>b.classList.toggle("on",
+    (b.dataset.vm==="public")===S.ui.public));
+  document.title=S.lang==="zh"?"UXR 能力之树":"UXR Skill Tree";
+}
+/* ---------------- renderers ---------------- */
+function renderAll(){
+  applyI18n();
+  document.body.classList.toggle("public",!!S.ui.public);
+  $("demoBanner").classList.toggle("show",S.mode==="demo");
+  renderProgress(); renderMain(); renderGaps(); renderSprint(); renderTimeline(); renderLib();
+  const aiS=$("aiStatus");if(aiS&&!aiS.dataset.busy)aiS.textContent=S.api.key?t("aiReady"):t("aiMissing");
+}
+let libBranch=0;
+function renderLib(){
+  const zh=S.lang==="zh";
+  $("libChips").innerHTML=`<button class="chip${libBranch===0?" on":""}" data-lb="0">${zh?"全部":"All"}</button>`+
+    BRANCHES.map(b=>`<button class="chip${libBranch===b.id?" on":""}" data-lb="${b.id}">${esc(brName(b))}</button>`).join("");
+  $("libChips").querySelectorAll(".chip").forEach(c=>c.onclick=()=>{libBranch=+c.dataset.lb;renderLib();});
+  const list=RESLIB.filter(r=>libBranch===0||r.br===libBranch);
+  $("libList").innerHTML=list.map(r=>{
+    const b=br(r.br);
+    return `<div class="resitem"><span class="tp">${esc(zh?r.tp.zh:r.tp.en)}</span> `+
+    `<span class="tag md">${esc(brName(b))}</span><br>`+
+    `<a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.title)}</a>`+
+    `<small>${esc(zh?r.hl.zh:r.hl.en)}</small>`+
+    `<small>→ ${r.sk.map(id=>`<a href="javascript:void(0)" data-node="${id}" style="color:var(--accent)">${esc(skName(sk(id)))}</a>`).join(" · ")}</small></div>`;
+  }).join("");
+  $("libList").querySelectorAll("[data-node]").forEach(a=>a.addEventListener("click",()=>openDrawer(+a.dataset.node)));
+}
+const DD_PHASES=["discover","define","develop","deliver"];
+function renderProgress(){
+  const lit=SKILLS.filter(s=>lv(s.id)>=1).length;
+  const totDem=SKILLS.reduce((a,s)=>a+s.dem,0);
+  const mastery=Math.round(SKILLS.reduce((a,s)=>a+(lv(s.id)/3)*s.dem,0)/totDem*100);
+  $("statLit").textContent=lit+"/47";
+  $("statMastery").textContent=mastery+"%";
+  $("masteryBar").style.width=mastery+"%";
+  const st=lit<12?0:lit<28?1:lit<43?2:3;
+  $("statStage").textContent=["🌱","🌿","🌳","🌲"][st]+" "+t("stage"+st);
+  $("branchBars").innerHTML=BRANCHES.map(b=>{
+    const ss=SKILLS.filter(s=>s.br===b.id);
+    const p=Math.round(ss.reduce((a,s)=>a+lv(s.id)/3,0)/ss.length*100);
+    return `<div class="bbar"><div class="row"><span><span style="display:inline-block;width:9px;height:9px;border-radius:3px;background:${b.color};margin-right:6px"></span>${esc(brName(b))}</span><span>${p}%</span></div><div class="tr"><i style="width:${p}%;background:${b.color}"></i></div></div>`;
+  }).join("");
+}
+function branchPath(i,n){
+  const rad=(-66+i*22)*Math.PI/180, pts=[];
+  for(let k=0;k<=10;k++){const tt=k/10*1.02, r=70+tt*300;
+    pts.push([460+Math.sin(rad)*r, 340-Math.cos(rad)*r*0.92]);}
+  return "M"+pts.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" L");
+}
+function nodePos(i,j,n){
+  const rad=(-66+i*22)*Math.PI/180;
+  const tt=n===1?0.55:(0.16+0.74*j/(n-1)), r=70+tt*300;
+  return [460+Math.sin(rad)*r, 340-Math.cos(rad)*r*0.92+(j%2?11:-11)];
+}
+function renderMain(){
+  document.querySelectorAll("#viewChips .chip").forEach(c=>c.classList.toggle("on",c.dataset.view===S.ui.view));
+  const isTree=S.ui.view==="tree";
+  $("treeWrap").style.display=isTree?"":"none";
+  $("ddView").style.display=isTree?"none":"";
+  $("ddModeSub").style.display=isTree?"none":"";
+  if(isTree)renderTree("treeSvg",{});else renderDD();
+}
+function leafSVG(x,y,L,s,hl){
+  const cx=x.toFixed(1),cy=y.toFixed(1);
+  const ang=(Math.atan2(y-340,x-460)*180/Math.PI+90).toFixed(0);
+  const ar=ang*Math.PI/180, vx=(x-7*Math.cos(ar)).toFixed(1), vy=(y-7*Math.sin(ar)).toFixed(1);
+  const wx=(x+7*Math.cos(ar)).toFixed(1), wy=(y+7*Math.sin(ar)).toFixed(1);
+  const rot=`rotate(${ang} ${cx} ${cy})`;
+  const vein=`<line x1="${vx}" y1="${vy}" x2="${wx}" y2="${wy}"`;
+  const target=(S.sprint.targets||[]).some(tg=>tg.skill===s.id);
+  const glow=(c,r)=>`<circle class="eglow" cx="${cx}" cy="${cy}" r="${r}" fill="${c}"/>`;
+  let body="";
+  if(L===0){
+    body=`<ellipse class="leafbody" cx="${cx}" cy="${cy}" rx="11" ry="7" transform="${rot}" fill="#faf8f3" stroke="#c9c2b4" stroke-width="1.6"/>${vein} stroke="#ddd6c4" stroke-width="1"/>`;
+  }else if(L===1){
+    body=`<ellipse class="leafbody" cx="${cx}" cy="${cy}" rx="11" ry="7" transform="${rot}" fill="#b8e0a8" stroke="#7cb86b" stroke-width="1.4"/>${vein} stroke="#8fc47f" stroke-width="1"/>`;
+  }else if(L===2){
+    body=`${glow("#2f9e44",17)}<ellipse class="leafbody" cx="${cx}" cy="${cy}" rx="12" ry="7.6" transform="${rot}" fill="#2f9e44" stroke="#1e7a32" stroke-width="1.4"/>${vein} stroke="#a9dba8" stroke-width="1"/>`;
+  }else{
+    body=`${glow("#f2b705",19)}<ellipse class="leafbody" cx="${cx}" cy="${cy}" rx="13" ry="8.4" transform="${rot}" fill="#f2b705" stroke="#d19a06" stroke-width="1.6"/>${vein} stroke="#ffe08a" stroke-width="1.1"/><circle cx="${(x+9).toFixed(1)}" cy="${(y-9).toFixed(1)}" r="5.5" fill="#e8590c" stroke="#c2430a" stroke-width="1.2"/>`;
+  }
+  const halo=target?`<circle class="halo" cx="${cx}" cy="${cy}" r="21" fill="none" stroke="#f2b705" stroke-width="2" stroke-dasharray="5 4"/>`:"";
+  const dim=hl&&s.ph!==hl?0.22:1, pulse=hl&&s.ph===hl?" pulse":"";
+  return `<g class="tnode${pulse}" data-id="${s.id}" data-ph="${s.ph}" opacity="${dim}">${halo}<title>${esc(skName(s))} · ${esc(lvName(L))} · ${s.dem}%</title>${body}</g>`;
+}
+function renderTree(svgId,opts){
+  opts=opts||{};
+  const svg=$(svgId), compact=!!opts.compact, hl=opts.hlPh||null, gid=compact?"c":"";
+  const H=compact?570:640;
+  let h=`<defs><linearGradient id="sky${gid}" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#dceefb"/><stop offset=".6" stop-color="#f2f8fd"/><stop offset="1" stop-color="#fdf3e3"/></linearGradient></defs>
+    <rect width="920" height="${H}" fill="url(#sky${gid})" rx="12"/>
+    <ellipse cx="460" cy="640" rx="420" ry="60" fill="#e8dfc9"/>
+    <circle cx="120" cy="110" r="34" fill="#fff8e1" opacity=".9"/><circle cx="790" cy="90" r="22" fill="#ffffff" opacity=".8"/>
+    <path d="M460,625 C452,520 468,430 460,345" stroke="#8a6d4b" stroke-width="30" fill="none" stroke-linecap="round"/>
+    <path d="M460,560 C410,540 380,520 350,500 M460,560 C510,545 545,525 575,505" stroke="#8a6d4b" stroke-width="12" fill="none" stroke-linecap="round"/>`;
+  if(!compact){
+    h+=`<g stroke="#7a5c3e" fill="none" stroke-linecap="round" opacity=".8">`
+      +`<path d="M460,610 C420,628 380,636 332,640" stroke-width="7"/><path d="M460,613 C430,640 392,650 352,658" stroke-width="5"/><path d="M460,616 C444,642 420,655 392,663" stroke-width="3.5"/>`
+      +`<path d="M460,610 C500,628 540,636 588,640" stroke-width="7"/><path d="M460,613 C490,640 528,650 568,658" stroke-width="5"/><path d="M460,616 C476,642 500,655 528,663" stroke-width="3.5"/></g>`
+      +`<text x="292" y="686" class="rootlabel">🌱 ${esc(t("rootWord"))} · ${esc(brName(BRANCHES[0]))}</text>`
+      +`<text x="628" y="686" class="rootlabel">🌱 ${esc(t("rootWord"))} · ${esc(brName(BRANCHES[3]))}</text>`;
+    h+=`<g font-size="11" fill="#6b6156">`
+      +`<ellipse cx="24" cy="26" rx="11" ry="7" fill="#faf8f3" stroke="#c9c2b4" stroke-width="1.6"/><text x="42" y="30">${esc(t("lv0"))}</text>`
+      +`<ellipse cx="150" cy="26" rx="11" ry="7" fill="#b8e0a8" stroke="#7cb86b" stroke-width="1.4"/><text x="168" y="30">${esc(t("lv1"))}</text>`
+      +`<ellipse cx="258" cy="26" rx="11" ry="7" fill="#2f9e44" stroke="#1e7a32" stroke-width="1.4"/><text x="276" y="30">${esc(t("lv2"))}</text>`
+      +`<ellipse cx="366" cy="26" rx="11" ry="7" fill="#f2b705" stroke="#d19a06" stroke-width="1.6"/><text x="384" y="30">${esc(t("lv3"))}</text></g>`;
+  }
+  BRANCHES.forEach((b,i)=>{
+    const ss=SKILLS.filter(s=>s.br===b.id);
+    h+=`<path d="${branchPath(i,ss.length)}" stroke="${b.color}" stroke-width="7" fill="none" opacity=".45" stroke-linecap="round"/>`;
+    const lp=nodePos(i,ss.length,ss.length);
+    h+=`<text x="${lp[0]}" y="${lp[1]-26}" class="blabel">${esc(brName(b))}</text>`;
+    ss.forEach((s,j)=>{
+      const [x,y]=nodePos(i,j,ss.length);
+      h+=leafSVG(x,y,lv(s.id),s,hl);
+    });
+  });
+  svg.innerHTML=h;
+  svg.querySelectorAll(".tnode").forEach(g=>g.addEventListener("click",()=>{
+    const id=+g.dataset.id;
+    openDrawer(id);
+    if(compact)flashPhase(g.dataset.ph);
+  }));
+}
+function flashPhase(ph){
+  const card=document.querySelector(`#ddGrid .dcol[data-ph="${ph}"]`);
+  if(!card)return;
+  try{card.scrollIntoView({behavior:"smooth",block:"nearest"});}catch(e){}
+  card.classList.remove("flash");void card.offsetWidth;card.classList.add("flash");
+  setTimeout(()=>card.classList.remove("flash"),1600);
+}
+function flashNode(id){
+  const g=document.querySelector(`#treeSvg .tnode[data-id="${id}"]`);
+  if(!g)return;
+  g.classList.remove("flash");void g.getBoundingClientRect();g.classList.add("flash");
+  setTimeout(()=>g.classList.remove("flash"),1600);
+}
+function renderLegend(){
+  $("ddLegend").innerHTML=`
+   <defs><marker id="ddah" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#cbd5e1"/></marker></defs>
+   <path d="M150,54 L208,12 L266,54 L208,96 Z" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linejoin="round"/>
+   <path d="M208,12 L208,96" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5 4"/>
+   <path d="M394,54 L452,12 L510,54 L452,96 Z" fill="none" stroke="#94a3b8" stroke-width="2.5" stroke-linejoin="round"/>
+   <path d="M452,12 L452,96" stroke="#cbd5e1" stroke-width="1.5" stroke-dasharray="5 4"/>
+   <path d="M282,54 L378,54" stroke="#cbd5e1" stroke-width="2" marker-end="url(#ddah)"/>
+   <g font-size="11" fill="#94a3b8" text-anchor="middle">
+    <text x="208" y="110">Problem Space · Diverge → Converge</text>
+    <text x="452" y="110">Solution Space · Diverge → Converge</text></g>`;
+}
+function colCard(ph){
+  const P=PHASES.find(p=>p.id===ph);
+  const ids=DDCOL[ph];
+  const used=ids.filter(id=>lv(id)>=2).length;
+  const cases=ids.filter(id=>hasCase(id)).length;
+  const tg=(S.sprint.targets||[]).map(x=>x.skill);
+  const tagline=S.lang==="zh"?`${P.spaceZh} · ${P.modeZh}${ph==="discover"||ph==="develop"?"探索":"聚焦"}`:`${P.spaceEn} · ${P.modeEn}`;
+  const pos=S.lang==="zh"?P.posZh:P.posEn;
+  return `<div class="dcol" data-ph="${ph}">`
+    +`<div class="dcolhead"><span class="dcolnum">0${P.n}</span><span class="dcolname">${esc(S.lang==="zh"?P.zh:P.en)}</span><span class="dcolmode">(${esc(S.lang==="zh"?(P.modeZh):(P.modeEn))})</span></div>`
+    +`<div class="dcoltags">${esc(tagline)}</div>`
+    +`<div class="dcolpos">${esc(pos)}</div>`
+    +`<div class="spills">${ids.map(id=>{const s=sk(id),L=lv(id);
+      return `<button class="spill lv${L}${tg.includes(id)?" target":""}" data-id="${id}"><i class="sdot"></i>${esc(skName(s))}</button>`;}).join("")}</div>`
+    +`<div class="dcolfoot"><span><b class="mono">${used}/${ids.length}</b> ${esc(t("mastered"))}</span><span>📁 <span class="mono">${cases}</span> ${esc(t("proofCases"))}</span></div>`
+    +`</div>`;
+}
+function renderDD(){
+  renderLegend();
+  $("ddGrid").innerHTML=DDORDER.map(ph=>colCard(ph)).join("");
+  $("ddGrid").querySelectorAll(".spill").forEach(b=>b.addEventListener("click",()=>openDrawer(+b.dataset.id)));
+  const tg=(S.sprint.targets||[]).map(x=>x.skill);
+  $("fdRunway").innerHTML=`<div class="fdlabel">${esc(t("fdTitle"))}</div><div class="spills" style="margin:0">${
+    DDCOL.foundation.map(id=>{const s=sk(id),L=lv(id);
+      return `<button class="spill lv${L}${tg.includes(id)?" target":""}" data-id="${id}"><i class="sdot"></i>${esc(skName(s))}</button>`;}).join("")}</div>`;
+  $("fdRunway").querySelectorAll(".spill").forEach(b=>b.addEventListener("click",()=>openDrawer(+b.dataset.id)));
+  renderDDAlert();
+}
+
+function showDrawer(){$("scrim").classList.add("show");$("drawer").classList.add("show");}
+function renderDDAlert(){
+  const el=$("ddAlert");
+  const stats=DDORDER.map(ph=>{const ids=DDCOL[ph];return{ph,total:ids.length,used:ids.filter(id=>lv(id)>=2).length,ncase:ids.filter(id=>hasCase(id)).length};});
+  if(stats.every(s=>s.used>0&&s.ncase>0)){el.className="good";el.style.display="";el.textContent=t("alertGood");return;}
+  const weak=stats.slice().sort((a,b)=>(a.used/a.total)-(b.used/b.total))[0];
+  const sug=weak.ph==="deliver"?t("sugDeliver"):t("sugGeneric");
+  const extra=weak.ncase===0?(S.lang==="zh"?"，且暂无案例":" with no cases yet"):"";
+  el.className="warn";el.style.display="";
+  el.textContent=t("alertWeak")(phName(weak.ph),weak.used,weak.total,extra,sug);
+}
+
+function renderGaps(){
+  const gaps=SKILLS.filter(s=>s.dem>=30&&lv(s.id)<=1).sort((a,b)=>b.dem-a.dem).slice(0,8);
+  $("gapList").innerHTML=gaps.length?gaps.map(s=>{
+    const L=lv(s.id);
+    return `<div class="gaprow" data-id="${s.id}" style="cursor:pointer">
+      <span class="tag ${tierOf(s.dem)}">${esc(t("tier"+tierOf(s.dem).replace("hi","Hi").replace("mh","Mh").replace("md","Md").replace("lo","Lo")))}</span>
+      <span><b>${esc(skName(s))}</b><br><span style="color:var(--muted);font-size:12.5px">${esc(t("gapLine")(skName(s),s.dem,lvName(L),L<=1?t("gapNeedKnown"):t("gapNeedUsed"))).replace(/【[^】]*】/,"").trim()}</span></span></div>`;
+  }).join(""):`<p class="sub">${esc(t("noGaps"))}</p>`;
+  $("gapList").querySelectorAll(".gaprow").forEach(r=>r.addEventListener("click",()=>openDrawer(+r.dataset.id)));
+}
+function renderSprint(){
+  const sp=S.sprint, body=$("sprintBody");
+  if(!bl(sp.title)){
+    body.innerHTML=`<p class="sub">${esc(t("noSprint"))}</p><button class="btn sm ghost priv" id="btnSprintEdit">${esc(t("editSprint"))}</button>`;
+    const b=$("btnSprintEdit");if(b)b.onclick=()=>sprintForm();
+    return;
+  }
+  const done=sp.targets.filter(x=>lv(x.skill)>=x.to).length, tot=sp.targets.length||1;
+  body.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+    <div><b>${esc(bl(sp.title))}</b> <span style="color:var(--muted);font-size:12.5px">${esc(sp.month)}</span></div>
+    <button class="btn sm ghost priv" id="btnSprintEdit">${esc(t("editSprint"))}</button></div>
+    <div class="mbar"><i style="width:${Math.round(done/tot*100)}%"></i></div>
+    <div style="font-size:12.5px;color:var(--muted);margin:6px 0">${esc(t("sprintProgress"))}: ${done}/${tot}</div>
+    ${sp.targets.map(x=>{const s=sk(x.skill);const ok=lv(x.skill)>=x.to;
+      return `<div class="gaprow"><span class="lvdot" style="background:${lvColor(lv(x.skill))}"></span>
+      <span>${esc(skName(s))} <span class="kbd">${esc(lvName(x.from))} → ${esc(lvName(x.to))}</span> ${ok?"✓":""}</span></div>`;}).join("")}`;
+  const b=$("btnSprintEdit");if(b)b.onclick=()=>sprintForm();
+}
+function sprintForm(){
+  const sp=S.sprint, body=$("sprintBody");
+  const opts=SKILLS.map(s=>`<option value="${s.id}">${esc(skName(s))}</option>`).join("");
+  const lvOpts=[0,1,2,3].map(l=>`<option value="${l}">${esc(lvName(l))}</option>`).join("");
+  body.innerHTML=`<div class="frow"><label>${esc(t("sprintTheme"))}</label><input type="text" id="spTitle" value="${esc(bl(sp.title))}" placeholder="${esc(t("sprintThemePh"))}"></div>
+   <div class="frow"><label>${esc(t("sprintMonth"))}</label><input type="text" id="spMonth" value="${esc(sp.month)}" placeholder="2026-11"></div>
+   <div id="spTargets">${sp.targets.map((x,i)=>`<div class="frow" data-i="${i}" style="display:flex;gap:6px;align-items:center">
+     <select data-f="skill" style="flex:1">${opts.replace(`value="${x.skill}"`,`value="${x.skill}" selected`)}</select>
+     <select data-f="from">${lvOpts.replace(`value="${x.from}"`,`value="${x.from}" selected`)}</select>→
+     <select data-f="to">${lvOpts.replace(`value="${x.to}"`,`value="${x.to}" selected`)}</select>
+     <button class="btn sm ghost" data-del>✕</button></div>`).join("")}</div>
+   <button class="btn sm ghost" id="spAdd">${esc(t("addTarget"))}</button>
+   <div style="margin-top:10px"><button class="btn sm" id="spSave">${esc(t("saveSprint"))}</button></div>`;
+  $("spAdd").onclick=()=>{
+    const d=document.createElement("div");d.className="frow";d.style.cssText="display:flex;gap:6px;align-items:center";
+    d.innerHTML=`<select data-f="skill" style="flex:1">${opts}</select><select data-f="from">${lvOpts}</select>→<select data-f="to">${lvOpts}</select><button class="btn sm ghost" data-del>✕</button>`;
+    d.querySelector("[data-del]").onclick=()=>d.remove();
+    $("spTargets").appendChild(d);
+  };
+  body.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>b.parentElement.remove());
+  $("spSave").onclick=()=>{
+    S.sprint={title:$("spTitle").value.trim(),month:$("spMonth").value.trim(),
+      targets:[...body.querySelectorAll("#spTargets .frow")].map(r=>({
+        skill:+r.querySelector('[data-f="skill"]').value,
+        from:+r.querySelector('[data-f="from"]').value,
+        to:+r.querySelector('[data-f="to"]').value}))};
+    saveSoon();renderSprint();
+  };
+}
+function renderTimeline(){
+  const items=[
+    ...S.checkins.map(c=>({ts:c.ts,html:`<b>${esc(skName(sk(c.skill)))}</b> · ${esc(lvName(c.from))} → <b>${esc(lvName(c.to))}</b><br>${esc(bl(c.evidence)||"")}`})),
+    ...S.notes.map(n=>({ts:n.ts,html:`<b>${esc(skName(sk(n.skill)))}</b> · 📥<br>${esc(bl(n.text).slice(0,140))}${bl(n.text).length>140?"…":""}${n.points&&n.points.length?`<br><span style="color:var(--muted)">→ ${n.points.map(p=>esc(bl(p))).join(S.lang==="zh"?"；":"; ")}</span>`:""}`}))
+  ].sort((a,b)=>b.ts-a.ts).slice(0,30);
+  $("timeline").innerHTML=items.length?items.map(i=>`<div class="ev"><time>${fmtD(i.ts)}</time>${i.html}</div>`).join(""):`<p class="sub">${esc(t("tlEmpty"))}</p>`;
+}
+/* ---------------- node drawer ---------------- */
+let curNode=null;
+function openDrawer(id){
+  curNode=id;const s=sk(id),b=br(s.br),L=lv(id);
+  $("dTitle").textContent=skName(s);
+  $("dMeta").innerHTML=`${esc(brName(b))} · ${esc(t("dDemand"))} <b>${s.dem}%</b> (${s.dem} ${esc(t("dMentions"))}) <span class="tag ${tierOf(s.dem)}">${esc(t("tier"+tierOf(s.dem).replace("hi","Hi").replace("mh","Mh").replace("md","Md").replace("lo","Lo")))}</span>${s.ph?` · 📍 ${esc(phName(s.ph))}`:""}`;
+  const prac=(S.lang==="zh"?s.prac.zh:s.prac.en).map(p=>`<div class="resitem">▸ ${esc(p)}</div>`).join("");
+  const star=S.star[id]||{};
+  const pub=S.ui.public;
+  $("dBody").innerHTML=`
+   ${s.ph?`<div class="dsec"><h4>📍 ${esc(t("phStation"))}</h4><div class="stationrow">
+    <span class="ptag static"><span class="lvdt" style="background:${lvColor(L)}"></span>${esc(phName(s.ph))}</span>
+    ${S.ui.view==="tree"&&s.ph!=="foundation"?`<button class="btn sm" id="dGoDD">${esc(t("goDDView"))}</button>`:""}
+    ${S.ui.view==="dd"?`<button class="btn sm" id="dGoTree">${esc(t("locateTree"))}</button>`:""}
+    ${s.ph==="foundation"?`<span class="muted">${esc(S.lang==="zh"?FOUNDATION.goalZh:FOUNDATION.goalEn)}</span>`:""}
+   </div></div>`:""}
+   <div class="dsec"><h4>${esc(t("dCheckin"))}</h4><div class="lvbtns">
+    ${[0,1,2,3].map(l=>`<button class="lvbtn${L===l?" sel":""}" data-lv="${l}"><b><span class="cdot" style="background:${lvColor(l)}"></span>${esc(lvName(l))}</b><small>${esc(t("lv"+l+"d"))}</small></button>`).join("")}
+   </div>
+   <div style="margin-top:8px"><input type="text" id="dEv" data-phx placeholder="${esc(t("dEvidencePh"))}">
+   <div style="margin-top:8px"><button class="btn sm" id="dSaveCk">${esc(t("dSave"))}</button> <span id="dCkMsg" style="font-size:12.5px;color:var(--accent)"></span></div></div></div>
+   <div class="dsec"><h4>${esc(t("dResources"))}</h4>${resHTML(id)}</div>
+   <div class="dsec"><h4>${esc(t("dPractice"))}</h4>${prac}</div>
+   <div class="dsec"><h4>${esc(t("dTalking"))}</h4><div class="resitem">🎤 ${esc(S.lang==="zh"?s.talk.zh:s.talk.en)}</div></div>
+   ${L>=2?`<div class="dsec priv"><h4>${esc(t("dStar"))}${star.draft?` <span class="tag mh">${esc(t("dDraft"))}</span>`:""}</h4>
+    <div class="star3">
+     <div><label>${esc(t("dStarS"))}</label><textarea data-star="s">${esc(bl(star.s)||"")}</textarea></div>
+     <div><label>${esc(t("dStarA"))}</label><textarea data-star="a">${esc(bl(star.a)||"")}</textarea></div>
+     <div><label>${esc(t("dStarR"))}</label><textarea data-star="r">${esc(bl(star.r)||"")}</textarea></div>
+    </div></div>`:""}
+   ${CASEMAP[id]?`<div class="dsec"><h4>📁 ${esc(t("casePublic"))}</h4><div class="resitem">${esc(S.lang==="zh"?CASES[CASEMAP[id]].zh.r:CASES[CASEMAP[id]].en.r)}</div></div>`:""}
+   <div class="dsec priv"><h4>${esc(t("dMylog"))}</h4>
+    <textarea id="dRefl" placeholder="${esc(t("dReflectPh"))}">${esc(bl(S.reflections[id])||"")}</textarea>
+    <div class="tl" style="margin-top:10px">${S.checkins.filter(c=>c.skill===id).sort((a,b)=>b.ts-a.ts).map(c=>`<div class="ev"><time>${fmtD(c.ts)}</time>${esc(lvName(c.from))} → <b>${esc(lvName(c.to))}</b><br>${esc(bl(c.evidence)||"")}</div>`).join("")}</div>
+   </div>`;
+  $("dBody").querySelectorAll(".lvbtn").forEach(b=>b.onclick=()=>{setLevel(id,+b.dataset.lv,null);});
+  const gDD=$("dGoDD");if(gDD)gDD.onclick=()=>{S.ui.view="dd";saveSoon();renderMain();closeDrawer();setTimeout(()=>flashPhase(s.ph),80);};
+  const gTR=$("dGoTree");if(gTR)gTR.onclick=()=>{S.ui.view="tree";saveSoon();renderMain();closeDrawer();setTimeout(()=>flashNode(s.id),80);};
+  $("dSaveCk").onclick=()=>{
+    const sel=$("dBody").querySelector(".lvbtn.sel");
+    setLevel(id,sel?+sel.dataset.lv:L,$("dEv").value.trim());
+    $("dCkMsg").textContent=t("dSaved");
+  };
+  $("dBody").querySelectorAll("[data-star]").forEach(ta=>ta.addEventListener("input",()=>{
+    S.star[id]=S.star[id]||{};S.star[id][ta.dataset.star]=ta.value;saveSoon();
+  }));
+  const rf=$("dRefl");if(rf)rf.addEventListener("input",()=>{S.reflections[id]=rf.value;saveSoon();});
+  showDrawer();
+}
+function setLevel(id,to,evidence){
+  const from=lv(id);S.levels[id]=to;
+  if(evidence!==null&&evidence!==undefined||from!==to){
+    S.checkins.push({id:"c"+Date.now(),ts:Date.now(),skill:id,from:from,to:to,evidence:evidence||""});
+  }
+  if(S.star[id])S.star[id].draft=false;
+  saveSoon();openDrawer(id);renderAll();
+}
+function closeDrawer(){$("scrim").classList.remove("show");$("drawer").classList.remove("show");curNode=null;}
+/* ---------------- drop-in ingestion ---------------- */
+let lastDrop=null;
+const AI_SYS="You are a UXR skill librarian. Skills: "+SKILLS.map(s=>s.id+"="+s.en).join("; ")+
+ ". Given a learning note or project retro (Chinese or English), return ONLY compact JSON: "+
+ "{\"points\":[3 key takeaways as strings],\"skill_id\":<best matching skill id 1-47>,\"suggested_level\":<1|2|3>,\"rationale\":\"one sentence\"}. No markdown, no extra text.";
+async function aiExtract(text){
+  try{
+    const r=await fetch(S.api.endpoint,{method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+S.api.key},
+      body:JSON.stringify({model:S.api.model||"gpt-4o-mini",
+        messages:[{role:"system",content:AI_SYS},{role:"user",content:text}],temperature:0.2})});
+    if(!r.ok)return null;
+    const j=await r.json();
+    const c=(j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content)||"";
+    const m=c.match(/\{[\s\S]*\}/);
+    if(!m)return null;
+    const o=JSON.parse(m[0]);
+    if(!o.skill_id||!sk(o.skill_id))return null;
+    return {points:(o.points||[]).slice(0,3),skillId:o.skill_id,
+      to:Math.min(3,Math.max(1,o.suggested_level|0||2)),rationale:o.rationale||""};
+  }catch(e){return null;}
+}
+function ruleExtract(text){
+  const low=text.toLowerCase(), scores=SKILLS.map(s=>{
+    let h=0;s.kw.forEach(k=>{if(k&&low.includes(k.toLowerCase()))h++;});return {s,h};});
+  scores.sort((a,b)=>b.h-a.h);
+  const best=scores[0].h>0?scores[0].s:sk(3);
+  const cur=lv(best.id);
+  const sents=text.split(/[。！？\n.!?]+/).map(x=>x.trim()).filter(x=>x.length>3).slice(0,3);
+  return {points:sents.length?sents:[text.slice(0,120)],skillId:best.id,
+    to:Math.min(3,cur+1),rationale:t("ruleUsed"),_rule:true};
+}
+$("btnAnalyze").onclick=async()=>{
+  const text=$("dropText").value.trim();if(!text)return;
+  $("aiStatus").textContent=t("analyzing");$("dropResult").innerHTML="";
+  let r=null;
+  if(S.api.key){r=await aiExtract(text);
+    $("aiStatus").textContent=r?t("aiReady"):t("aiFail");}
+  if(!r){r=ruleExtract(text);if(!S.api.key)$("aiStatus").textContent=t("aiMissing");}
+  lastDrop={text,r};
+  const s=sk(r.skillId),cur=lv(r.skillId);
+  $("dropResult").innerHTML=`<div class="resitem"><span class="tp">${esc(t("recNode"))}</span><br>
+   <b><a href="javascript:void(0)" id="drNode">${esc(skName(s))}</a></b>
+   <small>${esc(r.rationale)}</small>
+   <div style="margin:6px 0">${r.points.map((p,i)=>`<div>▸ ${esc(p)}</div>`).join("")}</div>
+   <div style="margin:8px 0"><span class="kbd">${esc(t("sugUpgrade"))}: ${esc(lvName(cur))} → ${esc(lvName(r.to))}</span></div>
+   <button class="btn sm" id="drConfirm">${esc(t("confirmAttach"))}</button>
+   <span id="drMsg" style="font-size:12.5px;color:var(--accent);margin-left:8px"></span></div>`;
+  $("drNode").onclick=()=>openDrawer(r.skillId);
+  $("drConfirm").onclick=()=>{
+    S.notes.push({id:"n"+Date.now(),ts:Date.now(),skill:r.skillId,text:text,
+      points:r.points,suggested:r.to});
+    if(r.to>cur){S.levels[r.skillId]=r.to;
+      S.checkins.push({id:"c"+Date.now(),ts:Date.now(),skill:r.skillId,from:cur,to:r.to,
+        evidence:(S.lang==="zh"?"丢进来：":"Drop-in: ")+r.points[0]});}
+    if(S.star[r.skillId])S.star[r.skillId].draft=false;
+    $("drMsg").textContent=t("attached")+(r.to>cur?" · "+t("evUpgraded"):" · "+t("evKept"));
+    saveSoon();renderAll();
+  };
+};
+/* ---------------- JD fit & gap scanner ---------------- */
+function kwMatch(text){
+  const low=text.toLowerCase();
+  return SKILLS.map(s=>{let h=0;s.kw.forEach(k=>{if(k&&low.includes(k.toLowerCase()))h++;});return {s,h};})
+   .filter(x=>x.h>0).sort((a,b)=>(b.h*b.s.dem)-(a.h*a.s.dem));
+}
+async function aiJDParse(text){
+  try{
+    const sys="You are a UXR skill librarian. Skills: "+SKILLS.map(s=>s.id+"="+s.en).join("; ")+
+     ". Given a job description, return ONLY compact JSON {\"skill_ids\":[matching skill ids]}. No markdown.";
+    const r=await fetch(S.api.endpoint,{method:"POST",
+      headers:{"Content-Type":"application/json","Authorization":"Bearer "+S.api.key},
+      body:JSON.stringify({model:S.api.model||"gpt-4o-mini",
+        messages:[{role:"system",content:sys},{role:"user",content:text.slice(0,6000)}],temperature:0.1})});
+    if(!r.ok)return null;
+    const j=await r.json();
+    const c=(j.choices&&j.choices[0]&&j.choices[0].message&&j.choices[0].message.content)||"";
+    const m=c.match(/\{[\s\S]*\}/);if(!m)return null;
+    const ids=(JSON.parse(m[0]).skill_ids||[]).filter(id=>sk(id));
+    return [...new Set(ids)].map(id=>({s:sk(id),h:2}));
+  }catch(e){return null;}
+}
+$("btnScanJD").onclick=async()=>{
+  const text=$("jdText").value.trim();
+  if(!text){$("jdResult").innerHTML=`<p class="sub">${esc(t("jdNoText"))}</p>`;return;}
+  $("jdResult").innerHTML=`<p class="sub">${esc(t("analyzing"))}</p>`;
+  let matched=S.api.key?(await aiJDParse(text))||kwMatch(text):kwMatch(text);
+  const tot=matched.reduce((a,x)=>a+x.s.dem,0)||1;
+  const got=matched.reduce((a,x)=>a+x.s.dem*(lv(x.s.id)>=2?1:lv(x.s.id)===1?0.4:0),0);
+  const score=Math.round(got/tot*100);
+  const gaps=matched.filter(x=>lv(x.s.id)<=1).sort((a,b)=>b.s.dem-a.s.dem).slice(0,6);
+  S.jdScans.unshift({id:"j"+Date.now(),ts:Date.now(),title:$("jdName").value.trim(),
+    score:score,matched:matched.map(x=>x.s.id)});
+  S.jdScans=S.jdScans.slice(0,10);saveSoon();
+  $("jdResult").innerHTML=`
+   <div><span class="sub">${esc(t("fitScore"))}</span><div class="score">${score}%</div></div>
+   <div class="sub" style="margin-top:8px">${esc(t("matchedSkills"))} (${matched.length})</div>
+   <div class="chips">${matched.map(x=>`<button class="chip" data-mid="${x.s.id}">${esc(skName(x.s))} · ${x.s.dem}%</button>`).join("")}</div>
+   <div class="sub" style="margin-top:8px">${esc(t("gapListT"))}</div>
+   ${gaps.length?gaps.map(x=>{const s=x.s,L=lv(s.id);
+     return `<div class="gaprow"><span class="tag ${tierOf(s.dem)}">${s.dem}%</span>
+     <span><b>${esc(skName(s))}</b> — ${esc(lvName(L))}<br><span style="color:var(--muted);font-size:12.5px">${esc(L<=1?t("gapNeedKnown"):t("gapNeedUsed"))}</span></span></div>`;}).join(""):`<p class="sub">${esc(t("noGaps"))}</p>`}
+   <p class="privnote">${esc(t("jdSaved"))} · ${S.jdScans.length}</p>`;
+  $("jdResult").querySelectorAll("[data-mid]").forEach(c=>c.onclick=()=>openDrawer(+c.dataset.mid));
+};
+/* ---------------- growth report ---------------- */
+$("btnReport").onclick=()=>{
+  const avg=bid=>{const ss=SKILLS.filter(s=>s.br===bid);return ss.reduce((a,s)=>a+lv(s.id),0)/ss.length;};
+  const q=avg(5),qual=avg(7),strat=(avg(3)+avg(4))/2,comm=avg(1);
+  const litN=SKILLS.filter(s=>lv(s.id)>=1).length;
+  let type;
+  if(q>=qual&&q>=1.2&&q-qual>0.25)type="pQuant";
+  else if(strat>=1.2&&qual>=1.2)type="pQual";
+  else type="pMix";
+  const gaps=SKILLS.filter(s=>s.dem>=30&&lv(s.id)<=1).sort((a,b)=>b.dem-a.dem).slice(0,8);
+  const zh=S.lang==="zh";
+  const why=zh?`定量分支平均 ${q.toFixed(1)} · 定性分支平均 ${qual.toFixed(1)} · 设计与战略分支平均 ${strat.toFixed(1)} · 沟通分支平均 ${comm.toFixed(1)}`
+    :`Quant avg ${q.toFixed(1)} · Qual avg ${qual.toFixed(1)} · Design+Strategy avg ${strat.toFixed(1)} · Comms avg ${comm.toFixed(1)}`;
+  $("reportOut").innerHTML=`
+   <div class="dsec"><h4>${esc(t("repProfile"))}</h4>
+    <div class="resitem"><b style="font-size:15px">${esc(t(type))}</b><br><small>${esc(why)}</small>
+    ${litN<3?`<br><small>⚠ ${esc(t("repEmpty"))}</small>`:""}</div></div>
+   <div class="dsec"><h4>${esc(t("repGaps"))}</h4>
+    ${gaps.map(s=>`<div class="gaprow"><span class="tag ${tierOf(s.dem)}">${s.dem}%</span>
+     <span>${esc(t("repGapLine")(skName(s),s.dem,lvName(lv(s.id))))}</span></div>`).join("")}</div>`;
+  $("reportOut").scrollIntoView({behavior:"smooth",block:"nearest"});
+};
+/* ---------------- settings / data ---------------- */
+function openSettings(){
+  $("setEndpoint").value=S.api.endpoint||"";
+  $("setModel").value=S.api.model||"";
+  $("setKey").value=S.api.key||"";
+  $("setRemember").checked=!!S.api.remember;
+  $("settingsModal").classList.add("show");
+}
+$("btnSettings").onclick=openSettings;
+$("btnSettingsClose").onclick=()=>$("settingsModal").classList.remove("show");
+$("btnSettingsSave").onclick=()=>{
+  S.api.endpoint=$("setEndpoint").value.trim()||"https://api.openai.com/v1/chat/completions";
+  S.api.model=$("setModel").value.trim()||"gpt-4o-mini";
+  S.api.key=$("setKey").value;S.api.remember=$("setRemember").checked;
+  persist();$("settingsModal").classList.remove("show");renderAll();
+};
+function dl(name,text){const b=new Blob([text],{type:"application/json"});const u=URL.createObjectURL(b);
+  const a=document.createElement("a");a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),2000);}
+$("btnExport").onclick=()=>{
+  const o=Object.assign({},S,{api:Object.assign({},S.api,{key:""})});
+  dl("uxr-skill-tree-backup-"+new Date().toISOString().slice(0,10)+".json",JSON.stringify(o,null,1));
+};
+$("btnBackupNow").onclick=()=>$("btnExport").onclick();
+$("btnImport").onclick=()=>$("fileImport").click();
+$("fileImport").addEventListener("change",e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{try{const o=JSON.parse(r.result);
+      if(!o||typeof o.levels!=="object")throw 0;
+      const keepLang=S.lang,keepKey=S.api.key,keepRemember=S.api.remember;
+      Object.keys(S).forEach(k=>delete S[k]);
+      Object.assign(S,freshPersonal(keepLang),o,{mode:"personal"});
+      S.api.key=keepKey;S.api.remember=keepRemember;
+      persist();renderAll();closeDrawer();
+    }catch(err){alert(t("importBad"));}e.target.value="";};
+  r.readAsText(f);
+});
+$("btnWipe").onclick=()=>{
+  if(!confirm(t("confirmWipe")))return;
+  const lang=S.lang;Object.keys(S).forEach(k=>delete S[k]);
+  Object.assign(S,freshPersonal(lang),{mode:"personal"});
+  persist();renderAll();closeDrawer();
+};
+/* ---------------- global wiring & init ---------------- */
+document.querySelectorAll("#langSeg button").forEach(b=>b.onclick=()=>{S.lang=b.dataset.lang;saveSoon();renderAll();});
+document.querySelectorAll("#viewSeg button").forEach(b=>b.onclick=()=>{S.ui.public=b.dataset.vm==="public";saveSoon();renderAll();});
+document.querySelectorAll("#viewChips .chip").forEach(c=>c.onclick=()=>{S.ui.view=c.dataset.view;saveSoon();renderMain();});
+$("btnStartMine").onclick=()=>{
+  const lang=S.lang;Object.keys(S).forEach(k=>delete S[k]);
+  Object.assign(S,freshPersonal(lang),{mode:"personal"});
+  applyPrefill();persist();renderAll();closeDrawer();
+};
+$("scrim").onclick=closeDrawer;
+$("dClose").onclick=closeDrawer;
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeDrawer();$("settingsModal").classList.remove("show");}});
+
+/* ---------------- i18n ---------------- */
+const STRINGS = {
+zh:{
+  appTitle:"UXR Level-Up Lab", appSub:"以 50+ Senior UXR 岗位为基准的个人成长技能树——为持续学习与端到端影响力而造。", vmPrivate:"个人", vmPublic:"访客",
+  settings:"设置", storeWarn:"浏览器存储不可用，你的记录只保存在内存中。请立即导出 JSON 备份，以免丢失。",
+  exportBtn:"导出备份", demoNote:"当前为演示模式：显示的是虚构人物的示例数据，方便你先体验。",
+  startMine:"清空并开始我的记录", overview:"总览", overviewSub:"基于 50 份大公司 UXR JD 的需求基线（2026-10）",
+  litCount:"已点亮 / 47", mastery:"整体精通度（按市场需求加权）", growthStage:"成长阶段",
+  libTitle:"资源库", libSub:"按板块整理的播客单期 / 文章规范 / 真实案例（点击标题直达原文）",
+  stage0:"幼苗", stage1:"小树", stage2:"大树", stage3:"参天大树",
+  skillTree:"技能树", skillTreeSub:"悬停查看技能名，点击节点查看详情、打卡定级。颜色代表熟练度。",
+  viewTree:"树", viewDD:"双钻", ddModeSub:"悬停阶段卡片，树上对应叶片会发光；点击任意技能查看详情",
+  phStation:"流程站位", goDDView:"在双钻中查看", locateTree:"在技能树中定位",
+  diamond1:"Diamond 1 · 问题探索", diamond2:"Diamond 2 · 方案落地",
+  healthRate:"达标率", proofCases:"个案例", artLabel:"关键产出物",
+  alertGood:"🟢 具备完整的端到端闭环掌控力（Strong End-to-End Ownership）",
+  alertWeak:(ph,used,total,extra,sug)=>`⚠️ ${ph}阶段较薄弱（${used}/${total} 达到"用过"${extra}），建议${sug}。`,
+  sugDeliver:"补充 1 个可用性测试或指标追踪案例", sugGeneric:"补充 1 个该阶段的实战案例",
+  ddAll:"全部阶段", ddDiscover:"发现 Discover", ddDefine:"定义 Define",
+  ddDevelop:"发散/测试 Develop", ddDeliver:"落地/衡量 Deliver",
+  ddDescDiscover:"探索用户与问题空间：生成式研究、访谈、田野调查",
+  ddDescDefine:"把洞察收敛为方向：综合三角验证、旅程地图、画像、方法选型",
+  ddDescDevelop:"原型验证与迭代：可用性测试、概念测试、实验、日记研究",
+  ddDescDeliver:"落地度量与持续验证：问卷、UX 基准、行为数据、统计分析",
+  ddCount:"个技能", rootWord:"根基",
+  qMethods:"方法视图", qArtifacts:"成果视图", quickScan:"面试官速览：只看有案例支撑的",
+  skillsApplied:"技能已应用", covTitle:"方法调用率", realCases:"真实案例",
+  mastered:"已掌握", fdTitle:"基础与横切能力",
+  noCase:"暂无案例——先点亮技能并沉淀 STAR", tradeTitle:"权衡与反思",
+  gapTitle:"优先补足", gapSub:"市场需求高 × 你的等级低 = 最值得先补的缺口",
+  sprintTitle:"本月冲刺岛", sprintSub:"定一个主题，选几个目标节点，月底看完成度",
+  dropTitle:"丢进来", dropSub:"粘贴论文阅读笔记或项目复盘，提炼要点并挂到对应节点",
+  dropPh:"例如：读完了《How Spotify Measures Algorithmic Satisfaction》……\n例如：在这次项目中用 Tree Testing 验证了新导航，任务用时缩短了 30%……",
+  analyzeBtn:"提炼并推荐节点", jdTitle:"JD 契合度扫描", jdSub:"粘贴目标岗位 JD，看看契合度与缺口",
+  jdNamePh:"岗位名称（可选，如 Senior UXR @ XX）", jdPh:"在此粘贴 JD 全文……", scanBtn:"开始扫描",
+  timelineTitle:"点亮记录", timelineSub:"你的自评打卡与证据沉淀时间线",
+  reportTitle:"成长分析", reportSub:"基于你的打卡数据 + 50 份 JD 基线生成",
+  genReport:"生成成长分析", apiEndpoint:"LLM 接口地址（OpenAI 兼容）", apiEndpointNote:"默认 OpenAI；也可用任何兼容 /v1/chat/completions 的服务。",
+  apiModel:"模型名称", apiKey:"API Key（BYOK，仅存你本地）", apiKeyNote:"绝不写入代码或上传。只在你要 AI 提炼/解析时调用。",
+  rememberKey:"记住 Key（存浏览器本地；不勾选则关闭页面后清除）",
+  dataMgmt:"数据管理", importBtn:"导入备份", wipeBtn:"清空个人数据", saveBtn:"保存", closeBtn:"关闭",
+  footBase:"Built based on analysis of 50 verified North American mid-senior UXR job postings (Oct 2026) to guide continuous learning and bridge industry skill gaps.",
+  footPrivacy:"Local-first：你的所有个人数据只保存在本浏览器 localStorage 中，不会上传；公开仓库仅含前端代码与演示假数据。",
+  lv0:"未点亮", lv1:"知道", lv2:"用过 · Mid", lv3:"能教 · Senior",
+  lv0d:"尚未接触过该方法或工具", lv1d:"理论理解，看过别人做，无独立商业实践",
+  lv2d:"端到端独立执行过，有完整交付物——北美 Mid 硬指标", lv3d:"能写 SOP、带 Junior、给 PM/Designer 开培训",
+  tierHi:"高需求", tierMh:"中高", tierMd:"中", tierLo:"低",
+  dCheckin:"自评打卡", dEvidence:"一句话证据", dEvidencePh:"例如：在 Sylvox 项目中独立设计并执行了 N=416 问卷",
+  dSave:"保存打卡", dSaved:"已记录 ✓", dResources:"学习素材", dPractice:"练手方案", dTalking:"面试 Talking Points",
+  dStar:"STAR 面试故事", dStarS:"S/T 情境与任务", dStarA:"A 行动与取舍", dStarR:"R 结果与影响",
+  dMylog:"我的记录", dReflect:"学习反思（仅个人可见）", dReflectPh:"写下你的理解、踩坑、疑问……",
+  dDemand:"市场需求", dMentions:"份 JD 提及", dBranch:"板块", dDraft:"草稿可改",
+  analyzing:"分析中……", aiReady:"已连接 AI，将用模型提炼", aiMissing:"未填 API Key，将用关键词规则推荐",
+  aiFail:"AI 调用失败，已降级为关键词规则推荐", ruleUsed:"关键词规则推荐",
+  recNode:"推荐节点", sugUpgrade:"建议升级", confirmAttach:"确认挂载", attached:"已挂载到节点 ✓",
+  fitScore:"契合度", matchedSkills:"命中的技能", gapListT:"缺口清单", noGaps:"没有明显缺口，冲！",
+  jdSaved:"扫描已保存", jdNoText:"请先粘贴 JD 全文",
+  repProfile:"画像诊断", repGaps:"市场 Gap 分析", repEmpty:"先给几个节点打卡，画像会更准",
+  pQual:"Qual-heavy Strategist · 强定性战略型", pMix:"Mixed-methods Operator · 平衡混合型", pQuant:"Quantitative UX Researcher · 量化体验研究员",
+  sprintTheme:"本月主题", sprintThemePh:"例如：AI 评估岛", sprintMonth:"月份", addTarget:"添加目标",
+  targetSkill:"目标节点", fromTo:"从 → 到", sprintProgress:"完成度", editSprint:"编辑冲刺", saveSprint:"保存冲刺",
+  noSprint:"还没有设定本月冲刺，点右上编辑开始。", tlEmpty:"还没有打卡记录，去点亮第一个节点吧。",
+  confirmWipe:"确定清空所有个人数据吗？建议先导出备份。此操作不可撤销。", wiped:"已清空",
+  imported:"导入成功", importBad:"文件格式不正确", exported:"备份已下载",
+  pubNote:"访客模式：已隐藏学习反思、私密复盘与 STAR 细节",
+  casePublic:"公开案例", evUpgraded:"等级已更新", evKept:"等级保持",
+  gapLine:(sk,dem,lv,need)=>`【${sk}】市场需求 ${dem}%，你当前为“${lv}”；${need}`,
+  gapNeedKnown:"补 1 个实战案例可冲击“用过”", gapNeedUsed:"向“能教”努力，冲击 Senior 岗",
+  repGapLine:(sk,dem,lv)=>`你在【${sk}】（${dem}% JD 提及）上停留在“${lv}”，建议补齐 1 个实战案例后再投同类 Mid 岗。`,
+  lit:"已点亮",
+},
+en:{
+  appTitle:"UXR Level-Up Lab", appSub:"A personal growth skill tree benchmarked by 50+ Senior UXR roles — engineered for continuous learning and end-to-end impact.", vmPrivate:"Private", vmPublic:"Public",
+  settings:"Settings", storeWarn:"Browser storage is unavailable; your entries live only in memory. Export a JSON backup now to avoid losing them.",
+  exportBtn:"Export backup", demoNote:"Demo mode: showing a fictional persona's sample data so you can explore first.",
+  startMine:"Clear & start my own record", overview:"Overview", overviewSub:"Baseline: demand from 50 verified big-company UXR JDs (Oct 2026)",
+  litCount:"lit / 47", mastery:"Overall mastery (demand-weighted)", growthStage:"Growth stage",
+  libTitle:"Resource library", libSub:"Podcast episodes / articles & guidelines / real cases, organized by branch (click a title to open)",
+  stage0:"Seedling", stage1:"Sapling", stage2:"Tree", stage3:"Towering tree",
+  skillTree:"Skill tree", skillTreeSub:"Hover for skill names; click a node for details and check-in. Color = proficiency.",
+  viewTree:"Tree", viewDD:"Double Diamond", ddModeSub:"Hover a phase card to light up its leaves on the tree; click any skill for details",
+  phStation:"Process stage", goDDView:"View in Double Diamond", locateTree:"Locate on skill tree",
+  diamond1:"Diamond 1 · Problem Discovery", diamond2:"Diamond 2 · Solution Delivery",
+  healthRate:"Proficient", proofCases:"cases", artLabel:"Key artifacts",
+  alertGood:"🟢 Strong end-to-end ownership — full closed-loop capability",
+  alertWeak:(ph,used,total,extra,sug)=>`⚠️ ${ph} is thin (${used}/${total} at "Practiced"${extra}) — ${sug}.`,
+  sugDeliver:"add 1 usability-test or metrics-tracking case", sugGeneric:"add 1 hands-on case in this phase",
+  ddAll:"All phases", ddDiscover:"Discover", ddDefine:"Define",
+  ddDevelop:"Develop", ddDeliver:"Deliver",
+  ddDescDiscover:"Explore users & problem space: generative research, interviews, fieldwork",
+  ddDescDefine:"Converge insights into direction: synthesis, journey maps, personas, method selection",
+  ddDescDevelop:"Prototype validation & iteration: usability testing, concept testing, experiments",
+  ddDescDeliver:"Ship & measure: surveys, UX benchmarks, behavioral data, stats",
+  ddCount:"skills", rootWord:"Roots",
+  qMethods:"Methods", qArtifacts:"Artifacts", quickScan:"Recruiter scan: cases only",
+  skillsApplied:"Skills Applied", covTitle:"Method coverage", realCases:"Real cases",
+  mastered:"Mastered", fdTitle:"Foundation & Cross-Cutting Capabilities",
+  noCase:"No cases yet — light up the skill and add STAR stories first", tradeTitle:"Trade-offs & reflection",
+  gapTitle:"Top gaps", gapSub:"High market demand × your low level = fix these first",
+  sprintTitle:"Monthly sprint island", sprintSub:"Pick a theme and target nodes; check completion at month end",
+  dropTitle:"Drop in", dropSub:"Paste paper notes or project retros; extract takeaways and attach to nodes",
+  dropPh:"e.g. Finished reading 'How Spotify Measures Algorithmic Satisfaction'…\ne.g. In this project I validated the new nav with tree testing; task time dropped 30%…",
+  analyzeBtn:"Extract & recommend", jdTitle:"JD Fit Scanner", jdSub:"Paste a target JD to see fit score and gaps",
+  jdNamePh:"Role title (optional, e.g. Senior UXR @ XX)", jdPh:"Paste the full JD here…", scanBtn:"Scan",
+  timelineTitle:"Activity log", timelineSub:"Your check-ins and evidence, newest first",
+  reportTitle:"Growth report", reportSub:"Generated from your check-ins + the 50-JD baseline",
+  genReport:"Generate report", apiEndpoint:"LLM endpoint (OpenAI-compatible)", apiEndpointNote:"Defaults to OpenAI; any /v1/chat/completions-compatible service works.",
+  apiModel:"Model name", apiKey:"API key (BYOK, stored only locally)", apiKeyNote:"Never written into code or uploaded. Only used when you ask for AI extraction.",
+  rememberKey:"Remember key (in this browser; unchecked = cleared when the tab closes)",
+  dataMgmt:"Data", importBtn:"Import backup", wipeBtn:"Erase personal data", saveBtn:"Save", closeBtn:"Close",
+  footBase:"Built based on analysis of 50 verified North American mid-senior UXR job postings (Oct 2026) to guide continuous learning and bridge industry skill gaps.",
+  footPrivacy:"Local-first: all your personal data stays in this browser's localStorage, never uploaded; the public repo contains only frontend code plus fictional demo data.",
+  lv0:"Not started", lv1:"Aware", lv2:"Practiced · Mid", lv3:"Can teach · Senior",
+  lv0d:"Haven't touched this method or tool yet", lv1d:"Understand the theory / watched others; no independent practice",
+  lv2d:"Ran it end-to-end independently with real deliverables — the North America Mid bar", lv3d:"Can write SOPs, mentor juniors, train PMs/Designers",
+  tierHi:"High demand", tierMh:"Med-high", tierMd:"Medium", tierLo:"Low",
+  dCheckin:"Self check-in", dEvidence:"One-line evidence", dEvidencePh:"e.g. Designed and ran an N=416 survey solo at Sylvox",
+  dSave:"Save check-in", dSaved:"Saved ✓", dResources:"Learning resources", dPractice:"Practice plan", dTalking:"Interview talking points",
+  dStar:"STAR story", dStarS:"S/T Situation & task", dStarA:"A Action & trade-offs", dStarR:"R Result & impact",
+  dMylog:"My log", dReflect:"Reflection (private)", dReflectPh:"Your takeaways, pitfalls, questions…",
+  dDemand:"Market demand", dMentions:"JDs mention it", dBranch:"Branch", dDraft:"draft — editable",
+  analyzing:"Analyzing…", aiReady:"AI connected — will extract with the model", aiMissing:"No API key — keyword-rule fallback",
+  aiFail:"AI call failed — fell back to keyword rules", ruleUsed:"Keyword-rule recommendation",
+  recNode:"Recommended node", sugUpgrade:"Suggested upgrade", confirmAttach:"Confirm & attach", attached:"Attached ✓",
+  fitScore:"Fit score", matchedSkills:"Matched skills", gapListT:"Gap list", noGaps:"No major gaps — go for it!",
+  jdSaved:"Scan saved", jdNoText:"Paste the JD text first",
+  repProfile:"Profile diagnosis", repGaps:"Market gap analysis", repEmpty:"Check in a few nodes first for a sharper profile",
+  pQual:"Qual-heavy Strategist", pMix:"Mixed-methods Operator", pQuant:"Quantitative UX Researcher",
+  sprintTheme:"Theme this month", sprintThemePh:"e.g. AI evaluation island", sprintMonth:"Month", addTarget:"Add target",
+  targetSkill:"Target node", fromTo:"From → to", sprintProgress:"Progress", editSprint:"Edit sprint", saveSprint:"Save sprint",
+  noSprint:"No sprint set yet — hit Edit to start.", tlEmpty:"No check-ins yet — light up your first node.",
+  confirmWipe:"Erase ALL personal data? Export a backup first. This cannot be undone.", wiped:"Erased",
+  imported:"Import successful", importBad:"Invalid file format", exported:"Backup downloaded",
+  pubNote:"Visitor mode: reflections, private retros and STAR details are hidden",
+  casePublic:"Public case", evUpgraded:"Level updated", evKept:"Level kept",
+  gapLine:(sk,dem,lv,need)=>`[${sk}] — ${dem}% demand, you're at "${lv}"; ${need}`,
+  gapNeedKnown:"add 1 real project to reach “Practiced”", gapNeedUsed:"push toward “Can teach” for Senior roles",
+  repGapLine:(sk,dem,lv)=>`You're at "${lv}" on [${sk}] (mentioned in ${dem}% of JDs); add 1 hands-on case before applying to similar Mid roles.`,
+  lit:"lit",
+}
+};
+const t = k => (STRINGS[S.lang] && STRINGS[S.lang][k] !== undefined) ? STRINGS[S.lang][k] : (STRINGS.zh[k] ?? k);
+/* ---------------- init (must run after i18n) ---------------- */
+(function init(){
+  const saved=storeGet();
+  if(saved&&saved.v===1){Object.assign(S,saved);}
+  else{const d=JSON.parse(JSON.stringify(DEMO));Object.keys(S).forEach(k=>delete S[k]);Object.assign(S,d);}
+  S.ui=Object.assign({view:"tree",dd:"all",public:false,ddv:"methods",qscan:false},S.ui||{});
+  if(!S.api)S.api={endpoint:"https://api.openai.com/v1/chat/completions",model:"gpt-4o-mini",key:"",remember:false};
+  $("aiStatus").textContent=S.api.key?t("aiReady"):t("aiMissing");
+  renderAll();
+})();
+
+
+</script>
+</body>
+</html>
